@@ -9,10 +9,9 @@ import { useServerInsertedHTML } from "next/navigation";
 export const SandPackCSS = () => {
   useServerInsertedHTML(() => {
     return (
-      <style 
-        dangerouslySetInnerHTML={{ __html: getSandpackCssText() }} 
-        id="sandpack" 
-      />
+      <style id="sandpack">
+        {getSandpackCssText()}
+      </style>
     );
   });
   return null;
