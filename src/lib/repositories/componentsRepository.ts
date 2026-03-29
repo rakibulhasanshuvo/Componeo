@@ -10,7 +10,7 @@ export type ComponentUpdate = Database['public']['Tables']['components']['Update
  * Encapsulates all persistence logic for Atomic Units.
  */
 export class ComponentsRepository {
-  constructor(private readonly supabase: any) {}
+  constructor(private readonly supabase: SupabaseClient<Database>) {}
 
   /**
    * Fetch all public components with optional category filter.
