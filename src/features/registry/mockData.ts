@@ -1,6 +1,4 @@
-import { ComponentRow } from "./actions";
-
-export const ELITE_MOCK_COMPONENTS: ComponentRow[] = [
+export const ELITE_MOCK_COMPONENTS = [
   {
     id: "mock-1",
     created_at: new Date().toISOString(),
