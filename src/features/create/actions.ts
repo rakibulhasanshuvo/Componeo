@@ -14,7 +14,7 @@ const CreateComponentSchema = z.object({
   category: z.string().min(1, "Category is required"),
   code: z.string().min(5, "Atomic code structure too simple"),
   is_public: z.boolean().default(true),
-  thumbnail: z.any().optional(), // We'll handle file validation manually
+  thumbnail: z.instanceof(File).optional(),
 });
 
 export async function createComponent(data: z.infer<typeof CreateComponentSchema>) {
