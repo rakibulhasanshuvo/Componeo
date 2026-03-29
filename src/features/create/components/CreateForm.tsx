@@ -1,6 +1,5 @@
 "use client";
 
-import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -9,12 +8,9 @@ import {
   Layout, 
   Globe, 
   Lock,
-  Loader2,
   AlertCircle,
   Sparkles
 } from "lucide-react";
-import { createComponent } from "@/features/create/actions";
-import { useRouter } from "next/navigation";
 import MonacoEditor from "@/components/editor/MonacoEditor";
 
 // 1. Zod Schema for Component Forge
