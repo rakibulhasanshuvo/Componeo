@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { createComponent } from "@/features/create/actions";
 import { createClient } from "@/utils/supabase/client";
+import { type User } from "@supabase/supabase-js";
 import CreateForm from "@/features/create/components/CreateForm";
 
 // New Dashboard Components
@@ -70,7 +71,7 @@ export default function CreateComponentPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [isCompiling, setIsCompiling] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
 
   useEffect(() => {
