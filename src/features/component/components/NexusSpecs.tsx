@@ -12,7 +12,6 @@ import {
   Lock
 } from "lucide-react";
 import { ComponentRow } from "@/lib/repositories/componentsRepository";
-import { format } from "date-fns";
 
 interface NexusSpecsProps {
   component: ComponentRow;
@@ -20,7 +19,7 @@ interface NexusSpecsProps {
 
 export default function NexusSpecs({ component }: NexusSpecsProps) {
   const synthesisDate = component.created_at 
-    ? format(new Date(component.created_at), "MMM dd, yyyy HH:mm")
+    ? new Date(component.created_at).toLocaleString("en-US", { month: "short", day: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit", hour12: false })
     : "UNKNOWN";
 
   const specs = [
