@@ -111,6 +111,7 @@ export default function ComponentCard({
               className="absolute inset-0 w-full h-full"
             >
               {thumbnail_url ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
                 <img 
                    src={thumbnail_url} 
                    alt={title} 
