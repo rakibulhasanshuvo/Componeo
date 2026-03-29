@@ -66,11 +66,13 @@ export async function createComponent(data: z.infer<typeof CreateComponentSchema
 
   // 4. Database Injection
   try {
+    const { thumbnail, ...componentData } = validated.data;
+
     await repository.createComponent({
-      ...validated.data,
+      ...componentData,
       thumbnail_url,
       author_id: user.id,
-    } as any);
+    });
 
     // 5. Persistence Sync
     revalidatePath("/");
