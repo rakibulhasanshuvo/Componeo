@@ -67,8 +67,9 @@ export default function CreateForm({
     onSaveError(null);
     try {
       await onSubmit(data);
-    } catch (err: any) {
-      onSaveError(err.message || "Forge Overheat: Critical failure saving component.");
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Forge Overheat: Critical failure saving component.";
+      onSaveError(errorMessage);
     }
   };
 
