@@ -27,7 +27,7 @@ const createComponentSchema = z.object({
   thumbnail: z.any().optional(),
 });
 
-type CreateComponentValues = z.infer<typeof createComponentSchema>;
+export type CreateComponentValues = z.infer<typeof createComponentSchema>;
 
 interface CreateFormProps {
   initialCode: string;

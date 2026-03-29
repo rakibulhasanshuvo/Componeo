@@ -20,7 +20,7 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { createComponent } from "@/features/create/actions";
 import { createClient } from "@/utils/supabase/client";
-import CreateForm from "@/features/create/components/CreateForm";
+import CreateForm, { CreateComponentValues } from "@/features/create/components/CreateForm";
 
 // New Dashboard Components
 import ForgeSidebar from "@/features/create/components/ForgeSidebar";
@@ -93,7 +93,7 @@ export default function CreateComponentPage() {
     return () => clearTimeout(timer);
   };
 
-  const handleFormSubmit = async (data: any) => {
+  const handleFormSubmit = async (data: CreateComponentValues) => {
     setIsSaving(true);
     setSaveError(null);
     try {
