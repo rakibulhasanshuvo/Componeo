@@ -9,6 +9,19 @@ const mockGetComponentById = vi.fn();
 vi.mock('@/utils/supabase/server', () => ({
   createClient: vi.fn(),
 }));
+vi.mock('@/utils/supabase/static', () => ({
+  createStaticClient: vi.fn(),
+}));
+vi.mock('next/cache', () => ({
+  unstable_cache: (cb: any) => cb,
+}));
+vi.mock('react', async (importOriginal) => {
+  const actual = await importOriginal() as any;
+  return {
+    ...actual,
+    cache: (cb: any) => cb,
+  };
+});
 
 vi.mock('@/lib/repositories/componentsRepository', () => {
   return {

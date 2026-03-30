@@ -2,6 +2,7 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { ComponentsRepository } from "@/lib/repositories/componentsRepository";
+import type { ComponentInsert } from "@/lib/repositories/componentsRepository";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { z } from "zod";
 import crypto from "crypto";
@@ -15,7 +16,7 @@ const CreateComponentSchema = z.object({
   category: z.string().min(1, "Category is required"),
   code: z.string().min(5, "Atomic code structure too simple"),
   is_public: z.boolean().default(true),
-  thumbnail: z.instanceof(File).optional(),
+  thumbnail: typeof window !== 'undefined' ? z.instanceof(File).optional() : z.any().optional(),
 });
 
 export async function createComponent(data: z.infer<typeof CreateComponentSchema>) {

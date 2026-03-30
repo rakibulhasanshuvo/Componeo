@@ -12,14 +12,10 @@ vi.mock('@/utils/supabase/server', () => ({
 vi.mock('@/lib/repositories/componentsRepository', () => ({
   ComponentsRepository: vi.fn(),
 }));
-vi.mock('@/lib/repositories/componentsRepository', () => {
-  return {
-    ComponentsRepository: vi.fn(),
-  };
-});
 
 vi.mock('next/cache', () => ({
   revalidatePath: vi.fn(),
+  revalidateTag: vi.fn(),
 }));
 
 describe('createComponent Action', () => {
@@ -170,6 +166,9 @@ describe('createComponent Action', () => {
     expect(result.error).toBe('Registry injection encountered a critical failure.');
     expect(result.success).toBeUndefined();
     expect(revalidatePath).not.toHaveBeenCalled();
+  });
+});
+
 describe('createComponent', () => {
   beforeEach(() => {
     vi.clearAllMocks();
