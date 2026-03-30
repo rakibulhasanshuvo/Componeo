@@ -1,10 +1,10 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
-import { ComponentsRepository } from "@/lib/repositories/componentsRepository";
+import { ComponentsRepository, ComponentInsert } from "@/lib/repositories/componentsRepository";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { randomUUID } from "crypto";
+import crypto from "crypto";
 
 /**
  * Zod Schema for Atomic Unit Creation
@@ -15,7 +15,7 @@ const CreateComponentSchema = z.object({
   category: z.string().min(1, "Category is required"),
   code: z.string().min(5, "Atomic code structure too simple"),
   is_public: z.boolean().default(true),
-  thumbnail: z.any().optional(), // We'll handle file validation manually
+  thumbnail: z.instanceof(File).optional(),
 });
 
 export async function createComponent(data: z.infer<typeof CreateComponentSchema>) {
@@ -45,7 +45,7 @@ export async function createComponent(data: z.infer<typeof CreateComponentSchema
   if (data.thumbnail && data.thumbnail instanceof File) {
     const file = data.thumbnail;
     const fileExt = file.name.split('.').pop();
-    const fileName = `${randomUUID()}-${Date.now()}.${fileExt}`;
+    const fileName = `${crypto.randomUUID()}-${Date.now()}.${fileExt}`;
     const filePath = `${user.id}/${fileName}`;
 
     const { error: uploadError } = await supabase.storage
@@ -68,12 +68,14 @@ export async function createComponent(data: z.infer<typeof CreateComponentSchema
   try {
     const { thumbnail, ...componentData } = validated.data;
 
-    // Type constraints enforced at repository level
-    await repository.createComponent({
+    const insertPayload: ComponentInsert = {
       ...componentData,
       thumbnail_url,
       author_id: user.id,
-    });
+    };
+
+    // Type constraints enforced at repository level
+    await repository.createComponent(insertPayload);
 
     // 5. Persistence Sync
     revalidatePath("/");
