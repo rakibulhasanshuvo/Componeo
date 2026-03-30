@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
-import { ComponentsRepository } from "@/lib/repositories/componentsRepository";
+import { ComponentsRepository, ComponentInsert } from "@/lib/repositories/componentsRepository";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { randomUUID } from "crypto";
@@ -68,11 +68,13 @@ export async function createComponent(data: z.infer<typeof CreateComponentSchema
   try {
     const { thumbnail, ...componentData } = validated.data;
 
-    await repository.createComponent({
+    const payload: ComponentInsert = {
       ...componentData,
       thumbnail_url,
       author_id: user.id,
-    });
+    };
+
+    await repository.createComponent(payload);
 
     // 5. Persistence Sync
     revalidatePath("/");
