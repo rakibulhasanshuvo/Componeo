@@ -8,10 +8,15 @@ import { useServerInsertedHTML } from "next/navigation";
  */
 export const SandPackCSS = () => {
   useServerInsertedHTML(() => {
+    const cssText = getSandpackCssText();
+
     return (
-      <style id="sandpack">
-        {getSandpackCssText()}
-      </style>
+      <style
+        id="sandpack"
+        dangerouslySetInnerHTML={{
+          __html: (cssText || "").replace(/<\/(style)/gi, "<\\/$1"),
+        }}
+      />
     );
   });
   return null;
