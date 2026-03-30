@@ -4,8 +4,12 @@ import React, { useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import { SquareCode as Code, ArrowUpRight, CheckCircle2, Trash2 } from "lucide-react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { ComponentRow } from "@/lib/repositories/componentsRepository";
-import LivePreviewRenderer from "@/components/custom/LivePreviewRenderer";
+
+const LivePreviewRenderer = dynamic(() => import("@/components/custom/LivePreviewRenderer"), {
+  ssr: false,
+});
 
 interface ComponentCardProps {
   component: ComponentRow;
