@@ -1,63 +1,134 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { getComponents } from './actions'
-import { ELITE_MOCK_COMPONENTS } from './mockData'
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { getComponents, getComponentById } from './actions';
+import { ELITE_MOCK_COMPONENTS } from './mockData';
 
-// Mock the dependencies
+const mockGetPublicComponents = vi.fn();
+const mockGetComponentById = vi.fn();
+
+// Mock dependencies
 vi.mock('@/utils/supabase/server', () => ({
-  createClient: vi.fn()
-}))
+  createClient: vi.fn(),
+}));
 
 vi.mock('@/lib/repositories/componentsRepository', () => {
-  const ComponentsRepositoryMock = vi.fn()
-  ComponentsRepositoryMock.prototype.getPublicComponents = vi.fn()
-  ComponentsRepositoryMock.prototype.getComponentById = vi.fn()
-
   return {
-    ComponentsRepository: ComponentsRepositoryMock
-  }
-})
+    ComponentsRepository: class {
+      getPublicComponents(...args: any[]) { return mockGetPublicComponents(...args); }
+      getComponentById(...args: any[]) { return mockGetComponentById(...args); }
+    },
+  };
+});
 
-describe('Registry Actions - getComponents', () => {
-  let mockGetPublicComponents: any
+describe('Registry Actions', () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
 
-  beforeEach(async () => {
-    vi.clearAllMocks()
+    // Silence console logs during tests to keep output clean
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+  });
 
-    // Suppress console.warn and console.error during tests
-    vi.spyOn(console, 'warn').mockImplementation(() => {})
-    vi.spyOn(console, 'error').mockImplementation(() => {})
+  describe('getComponents', () => {
+    it('should return components from the repository', async () => {
+      const mockComponents = [{ id: '1', name: 'Test Component' }];
+      mockGetPublicComponents.mockResolvedValue(mockComponents);
 
-    // Import inside so we can access the mocked class prototype
-    const { ComponentsRepository } = await import('@/lib/repositories/componentsRepository')
-    mockGetPublicComponents = ComponentsRepository.prototype.getPublicComponents
-  })
+      const result = await getComponents();
 
-  it('should return data when components exist', async () => {
-    const mockData = [{ id: '1', title: 'Component 1' }, { id: '2', title: 'Component 2' }]
-    mockGetPublicComponents.mockResolvedValue(mockData)
+      expect(result).toEqual(mockComponents);
+      expect(mockGetPublicComponents).toHaveBeenCalledWith(undefined);
+    });
 
-    const result = await getComponents()
+    it('should return components filtered by category', async () => {
+      const mockComponents = [{ id: '1', name: 'Test Component', category: 'Buttons' }];
+      mockGetPublicComponents.mockResolvedValue(mockComponents);
 
-    expect(result).toEqual(mockData)
-    expect(mockGetPublicComponents).toHaveBeenCalledTimes(1)
-  })
+      const result = await getComponents('Buttons');
 
-  it('should return ELITE_MOCK_COMPONENTS and warn when database is empty', async () => {
-    mockGetPublicComponents.mockResolvedValue([])
+      expect(result).toEqual(mockComponents);
+      expect(mockGetPublicComponents).toHaveBeenCalledWith('Buttons');
+    });
 
-    const result = await getComponents()
+    it('should return ELITE_MOCK_COMPONENTS when database returns empty array', async () => {
+      mockGetPublicComponents.mockResolvedValue([]);
 
-    expect(result).toEqual(ELITE_MOCK_COMPONENTS)
-    expect(console.warn).toHaveBeenCalledWith('SYSTEM: [Database_Empty] Serving architectural fallback set.')
-  })
+      const result = await getComponents();
 
-  it('should return ELITE_MOCK_COMPONENTS and log error when fetching components fails', async () => {
-    const mockError = new Error('Database connection failed')
-    mockGetPublicComponents.mockRejectedValue(mockError)
+      expect(result).toEqual(ELITE_MOCK_COMPONENTS);
+      expect(console.warn).toHaveBeenCalledWith('SYSTEM: [Database_Empty] Serving architectural fallback set.');
+    });
 
-    const result = await getComponents()
+    it('should return ELITE_MOCK_COMPONENTS when repository throws an error', async () => {
+      const testError = new Error('Database connection failed');
+      mockGetPublicComponents.mockRejectedValue(testError);
 
-    expect(result).toEqual(ELITE_MOCK_COMPONENTS)
-    expect(console.error).toHaveBeenCalledWith('SYSTEM: [Database_Error] Fetching components failed:', mockError)
-  })
-})
+      const result = await getComponents();
+
+      expect(result).toEqual(ELITE_MOCK_COMPONENTS);
+      expect(console.error).toHaveBeenCalledWith('SYSTEM: [Database_Error] Fetching components failed:', testError);
+    });
+
+    it('should return ELITE_MOCK_COMPONENTS when repository throws an error for a specific category', async () => {
+      const testError = new Error('Database connection failed for category');
+      mockGetPublicComponents.mockRejectedValue(testError);
+
+      const result = await getComponents('Buttons');
+
+      expect(result).toEqual(ELITE_MOCK_COMPONENTS);
+      expect(console.error).toHaveBeenCalledWith('SYSTEM: [Database_Error] Fetching components failed:', testError);
+    });
+  });
+
+  describe('getComponentById', () => {
+    it('should return a component by ID from the repository', async () => {
+      const mockComponent = { id: 'test-id', name: 'Test Component' };
+      mockGetComponentById.mockResolvedValue(mockComponent);
+
+      const result = await getComponentById('test-id');
+
+      expect(result).toEqual(mockComponent);
+      expect(mockGetComponentById).toHaveBeenCalledWith('test-id');
+    });
+
+    it('should fallback to ELITE_MOCK_COMPONENTS when component is not found', async () => {
+      mockGetComponentById.mockResolvedValue(null);
+
+      // Use the first ID from mock data for testing
+      const testId = ELITE_MOCK_COMPONENTS[0].id;
+      const result = await getComponentById(testId);
+
+      expect(result).toEqual(ELITE_MOCK_COMPONENTS[0]);
+    });
+
+    it('should return null when component is not found and not in mock data', async () => {
+      mockGetComponentById.mockResolvedValue(null);
+
+      const result = await getComponentById('non-existent-id');
+
+      expect(result).toBeNull();
+    });
+
+    it('should fallback to ELITE_MOCK_COMPONENTS when repository throws an error', async () => {
+      const testError = new Error('Database connection failed');
+      mockGetComponentById.mockRejectedValue(testError);
+
+      // Use the first ID from mock data for testing
+      const testId = ELITE_MOCK_COMPONENTS[0].id;
+      const result = await getComponentById(testId);
+
+      expect(result).toEqual(ELITE_MOCK_COMPONENTS[0]);
+      expect(console.error).toHaveBeenCalledWith(`SYSTEM: [Database_Error] Fetching component ${testId} failed:`, testError);
+    });
+
+    it('should return null when repository throws an error and component is not in mock data', async () => {
+      const testError = new Error('Database connection failed');
+      mockGetComponentById.mockRejectedValue(testError);
+
+      const testId = 'non-existent-id';
+      const result = await getComponentById(testId);
+
+      expect(result).toBeNull();
+      expect(console.error).toHaveBeenCalledWith(`SYSTEM: [Database_Error] Fetching component ${testId} failed:`, testError);
+    });
+  });
+});
