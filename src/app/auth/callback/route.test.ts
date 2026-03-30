@@ -98,4 +98,27 @@ describe('Auth Callback Route', () => {
 
     process.env.NODE_ENV = originalNodeEnv
   })
+
+  it('should redirect to default /dashboard if next parameter is missing', async () => {
+    const originalNodeEnv = process.env.NODE_ENV
+    process.env.NODE_ENV = 'development'
+
+    mockExchangeCodeForSession.mockResolvedValueOnce({ error: null })
+    const request = createRequest('http://localhost:3000/auth/callback?code=test-code')
+
+    await GET(request)
+
+    expect(NextResponse.redirect).toHaveBeenCalledWith('http://localhost:3000/dashboard')
+
+    process.env.NODE_ENV = originalNodeEnv
+  })
+
+  it('should redirect to auth-error if an unexpected error occurs during authentication', async () => {
+    mockExchangeCodeForSession.mockRejectedValueOnce(new Error('Unexpected system error'))
+    const request = createRequest('http://localhost:3000/auth/callback?code=test-code')
+
+    await GET(request)
+
+    expect(NextResponse.redirect).toHaveBeenCalledWith('http://localhost:3000/auth/auth-error')
+  })
 })
