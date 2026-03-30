@@ -41,8 +41,7 @@ export async function middleware(request: NextRequest) {
     const { data: { user } } = await supabase.auth.getUser();
 
     // If user is not logged in and trying to access a protected route
-    const isProtectedRoute = request.nextUrl.pathname.startsWith('/create') ||
-                            request.nextUrl.pathname.startsWith('/dashboard');
+    const isProtectedRoute = request.nextUrl.pathname.startsWith('/dashboard');
 
     if (!user && isProtectedRoute) {
       const url = request.nextUrl.clone();
@@ -54,8 +53,7 @@ export async function middleware(request: NextRequest) {
     console.error("Middleware Auth Error:", error);
 
     // Fail closed: if we can't verify the user, and it's a protected route, redirect to login
-    const isProtectedRoute = request.nextUrl.pathname.startsWith('/create') ||
-                            request.nextUrl.pathname.startsWith('/dashboard');
+    const isProtectedRoute = request.nextUrl.pathname.startsWith('/dashboard');
     if (isProtectedRoute) {
       const url = request.nextUrl.clone();
       url.pathname = '/login';
