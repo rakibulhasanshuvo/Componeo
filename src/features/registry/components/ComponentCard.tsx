@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import { SquareCode as Code, ArrowUpRight, CheckCircle2, Trash2 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import dynamic from "next/dynamic";
 import { ComponentRow } from "@/lib/repositories/componentsRepository";
 
@@ -16,6 +17,7 @@ interface ComponentCardProps {
   idx: number;
   isDashboard?: boolean;
   onDelete?: (id: string) => void;
+  priority?: boolean;
 }
 
 export default function ComponentCard({
@@ -23,6 +25,7 @@ export default function ComponentCard({
   idx,
   isDashboard = false,
   onDelete,
+  priority = false,
 }: ComponentCardProps) {
   const { id, title, description, category, code, thumbnail_url } = component;
   const [isCopied, setIsCopied] = useState(false);
@@ -115,11 +118,13 @@ export default function ComponentCard({
               className="absolute inset-0 w-full h-full"
             >
               {thumbnail_url ? (
-                /* eslint-disable-next-line @next/next/no-img-element */
-                <img 
+                <Image
                    src={thumbnail_url} 
                    alt={title} 
-                   className="w-full h-full object-cover grayscale-[0.2] group-hover/stage:scale-110 transition-transform duration-[2s] ease-out"
+                   fill
+                   sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                   priority={priority}
+                   className="object-cover grayscale-[0.2] group-hover/stage:scale-110 transition-transform duration-[2s] ease-out"
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-[#050505] relative overflow-hidden">
@@ -196,26 +201,26 @@ export default function ComponentCard({
           <h3 id={`title-${id}`} className="font-headline text-2xl font-black tracking-tighter text-white uppercase italic truncate group-hover:text-cyan-400 transition-colors duration-500">
             {title}
           </h3>
-          <span className="font-headline text-[8px] bg-white/[0.03] border border-white/10 px-3 py-1.5 rounded-full uppercase text-neutral-500 font-bold whitespace-nowrap group-hover:text-neutral-300 transition-colors tracking-[0.2em]">
+          <span className="font-headline text-[8px] bg-white/[0.05] border border-white/20 px-3 py-1.5 rounded-full uppercase text-neutral-300 font-bold whitespace-nowrap group-hover:text-white transition-colors tracking-[0.2em]">
             {category}
           </span>
         </div>
         
-        <p className="text-xs text-neutral-600 font-body leading-relaxed line-clamp-2 h-10 group-hover:text-neutral-500 transition-colors duration-700">
+        <p className="text-xs text-neutral-400 font-body leading-relaxed line-clamp-2 h-10 group-hover:text-neutral-300 transition-colors duration-700">
           {description || "Architectural unit synthesized for the Componeo ecosystem."}
         </p>
         
         <div className="flex gap-4 pt-2">
            <Link 
             href={`/component/${id}`}
-            className="flex-1 border border-white/5 bg-white/[0.02] text-neutral-400 font-headline font-black uppercase tracking-[0.2em] py-5 rounded-2xl text-[9px] hover:bg-white/5 hover:text-white flex items-center justify-center gap-2 transition-all"
+            className="flex-1 border border-white/5 bg-white/[0.02] text-neutral-400 font-headline font-black uppercase tracking-[0.2em] py-5 rounded-2xl text-[9px] hover:bg-white/5 hover:text-white focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none flex items-center justify-center gap-2 transition-all"
            >
             Explore
            </Link>
            <button 
              onClick={onCopy}
              aria-label={isCopied ? "Code copied to clipboard" : "Copy component code"}
-             className={`flex-1 font-headline font-black uppercase tracking-[0.2em] py-5 rounded-2xl text-[9px] transition-all flex items-center justify-center gap-2 px-4 ${
+             className={`flex-1 font-headline font-black uppercase tracking-[0.2em] py-5 rounded-2xl text-[9px] transition-all flex items-center justify-center gap-2 px-4 focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none ${
                isCopied 
                 ? "bg-emerald-500 text-black shadow-[0_0_30px_rgba(16,185,129,0.3)]" 
                 : "bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(255,255,255,0.2)]"

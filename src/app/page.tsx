@@ -26,7 +26,7 @@ export default async function HomePage({ searchParams }: PageProps) {
     <div className="asymmetric-gradient min-h-screen flex flex-col selection:bg-cyan-400 selection:text-black">
       <Navbar />
 
-      <main className="flex-1 max-w-7xl mx-auto w-full px-8 pt-40 pb-32 relative">
+      <main className="flex-1 max-w-7xl mx-auto w-full px-4 md:px-8 pt-40 pb-32 relative">
         {/* Decorative Grid Background */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
 
@@ -41,29 +41,29 @@ export default async function HomePage({ searchParams }: PageProps) {
                   <Boxes size={14} />
                   Atomic Unit Registry // v1.2.0
                 </div>
-                <h1 className="text-4xl md:text-6xl font-black font-headline tracking-tighter text-white uppercase italic">
+                <h1 className="text-3xl sm:text-4xl md:text-6xl font-black font-headline tracking-tighter text-white uppercase italic">
                   The <span className="text-cyan-400">Elite</span> Matrix
                 </h1>
               </div>
               
               <div className="flex items-center gap-8 border-l border-white/5 pl-8 py-2 hidden xl:flex">
                  <div className="space-y-1">
-                   <div className="text-[10px] font-headline font-black text-neutral-600 uppercase tracking-widest">Active Units</div>
+                   <div className="text-[10px] font-headline font-black text-neutral-400 uppercase tracking-widest">Active Units</div>
                    <div className="text-xl font-headline font-black text-white italic">{components.length.toString().padStart(2, '0')}</div>
                  </div>
                  <div className="space-y-1">
-                   <div className="text-[10px] font-headline font-black text-neutral-600 uppercase tracking-widest">Stability</div>
+                   <div className="text-[10px] font-headline font-black text-neutral-400 uppercase tracking-widest">Stability</div>
                    <div className="text-xl font-headline font-black text-emerald-400 italic">99.8%</div>
                  </div>
                  <div className="space-y-1">
-                   <div className="text-[10px] font-headline font-black text-neutral-600 uppercase tracking-widest">Threat Level</div>
+                   <div className="text-[10px] font-headline font-black text-neutral-400 uppercase tracking-widest">Threat Level</div>
                    <div className="text-xl font-headline font-black text-white italic">0.0</div>
                  </div>
               </div>
             </div>
 
             <div className="max-w-xl">
-              <p className="text-sm font-body text-neutral-500 leading-relaxed">
+              <p className="text-sm font-body text-neutral-300 leading-relaxed">
                 Archival access to high-fidelity React modules designed for the Componeo ecosystem. 
                 Every unit in the matrix is verified for atomic stability and performance optimization.
               </p>
@@ -81,7 +81,7 @@ export default async function HomePage({ searchParams }: PageProps) {
                 className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 items-start"
               >
                 {components.map((item, idx) => (
-                  <ComponentCard key={item.id} component={item} idx={idx} />
+                  <ComponentCard key={item.id} component={item} idx={idx} priority={idx < 3} />
                 ))}
               </div>
             ) : (
@@ -95,13 +95,13 @@ export default async function HomePage({ searchParams }: PageProps) {
                     <h2 className="font-headline text-3xl font-black text-white uppercase tracking-tighter italic">
                       Registry Offline
                     </h2>
-                    <p className="text-neutral-500 font-body max-w-sm mx-auto text-sm leading-relaxed">
+                    <p className="text-neutral-300 font-body max-w-sm mx-auto text-sm leading-relaxed">
                       All atomic units are currently de-materialized. Initialize the Forge to synthesize new components.
                     </p>
                   </div>
                   <Link 
-                    href="/dashboard"
-                    className="inline-flex items-center gap-3 bg-white text-black py-4 px-10 rounded-2xl font-headline font-black text-xs uppercase tracking-widest hover:bg-cyan-400 transition-all duration-500 shadow-2xl group"
+                    href="/create"
+                    className="inline-flex items-center gap-3 bg-white text-black py-4 px-10 rounded-2xl font-headline font-black text-xs uppercase tracking-widest hover:bg-cyan-400 transition-all duration-500 shadow-2xl group focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none"
                   >
                     Enter the Forge
                     <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform" />

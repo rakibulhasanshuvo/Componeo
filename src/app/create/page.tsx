@@ -143,7 +143,7 @@ export default function CreateComponentPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="max-w-7xl mx-auto px-8 pb-32"
+              className="max-w-7xl mx-auto px-4 md:px-8 pb-32"
             >
               <ForgeHero onStartBuilding={() => setView('editor')} />
               <ForgeModules onAction={(action: 'compiler' | 'blueprints' | 'staging') => {
@@ -188,7 +188,7 @@ export default function CreateComponentPage() {
               className="h-[calc(100vh-8rem)] flex flex-col md:flex-row relative"
             >
               {/* Editor Header Overlay */}
-              <div className="absolute top-0 left-0 right-0 z-40 px-10 py-6 flex justify-between items-center pointer-events-none">
+              <div className="absolute top-0 left-0 right-0 z-40 px-4 md:px-10 py-6 flex flex-wrap gap-4 justify-between items-center pointer-events-none">
                 <button 
                   onClick={() => setView('hub')}
                   className="pointer-events-auto flex items-center gap-3 px-6 py-3 rounded-2xl bg-white/5 border border-white/10 text-neutral-400 hover:text-cyan-400 hover:bg-white/10 transition-all font-headline font-black text-[9px] tracking-[0.3em] uppercase"
@@ -220,7 +220,7 @@ export default function CreateComponentPage() {
               </div>
 
               {/* Form Content */}
-              <section className={`flex-1 overflow-y-auto p-10 pt-24 scrollbar-hide ${showPreview ? "md:w-1/2" : "md:w-full"}`}>
+              <section className={`flex-1 overflow-y-auto p-4 md:p-10 pt-24 md:pt-24 scrollbar-hide ${showPreview ? "md:w-1/2" : "md:w-full"}`}>
                 <div className="max-w-3xl mx-auto space-y-12">
                   <div className="space-y-4 border-b border-white/5 pb-8">
                     <div className="inline-flex items-center gap-2 text-cyan-400">
@@ -251,12 +251,12 @@ export default function CreateComponentPage() {
                     animate={{ x: 0, opacity: 1 }}
                     exit={{ x: "100%", opacity: 0 }}
                     transition={{ type: "spring", damping: 30, stiffness: 200 }}
-                    className="flex-1 bg-[#050505] p-10 overflow-y-auto relative border-l border-white/5 flex items-center justify-center min-h-[600px]"
+                    className="flex-1 bg-[#050505] p-4 md:p-10 overflow-y-auto relative md:border-l border-t md:border-t-0 border-white/5 flex items-center justify-center min-h-[600px]"
                   >
                     <div className="absolute inset-0 pointer-events-none opacity-[0.03] bg-[linear-gradient(to_right,#888_1px,transparent_1px),linear-gradient(to_bottom,#888_1px,transparent_1px)] bg-[size:40px_40px]" />
                     
-                    <div className="w-full max-w-3xl flex items-center justify-center p-12">
-                      <div className="w-full h-full min-h-[500px] bg-[#111] rounded-[3.5rem] p-16 shadow-[0_0_100px_rgba(0,0,0,0.8)] border border-white/5 relative overflow-hidden flex items-center justify-center">
+                    <div className="w-full max-w-3xl flex items-center justify-center md:p-12">
+                      <div className="w-full h-full min-h-[400px] md:min-h-[500px] bg-[#111] rounded-[2rem] md:rounded-[3.5rem] p-8 md:p-16 shadow-[0_0_100px_rgba(0,0,0,0.8)] border border-white/5 relative overflow-hidden flex items-center justify-center">
                          <AnimatePresence mode="wait">
                            {isCompiling ? (
                               <motion.div 

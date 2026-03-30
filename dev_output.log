@@ -8,12 +8,17 @@
    - Environments: .env
 
  ✓ Starting...
- ✓ Ready in 2.6s
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
+
+ ✓ Ready in 1983ms
  ○ Compiling /middleware ...
- ✓ Compiled /middleware in 1643ms (166 modules)
+ ✓ Compiled /middleware in 1371ms (166 modules)
  ○ Compiling / ...
 <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (215kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
- ✓ Compiled / in 17.8s (1576 modules)
+ ✓ Compiled / in 15.8s (1576 modules)
 DATABASE_ERROR: [ComponentsRepository.getPublicComponents] {
   message: 'TypeError: fetch failed',
   details: 'TypeError: fetch failed\n' +
@@ -47,9 +52,17 @@ SYSTEM: [Database_Error] Fetching components failed: Error: Architectural failur
   41 |     }
   42 |   }
   43 |
- ✓ Compiled in 2.8s (675 modules)
- ✓ Compiled in 234ms (661 modules)
- GET / 200 in 20885ms
- ○ Compiling /login ...
- ✓ Compiled /login in 2.4s (1672 modules)
- GET /login?next=%2Fdashboard 200 in 3375ms
+ ✓ Compiled in 2.6s (675 modules)
+ GET / 200 in 18561ms
+ ○ Compiling /templates ...
+ ✓ Compiled /templates in 3.8s (1571 modules)
+ GET /templates 200 in 4451ms
+ ○ Compiling /create ...
+ ✓ Compiled /create in 4s (2161 modules)
+ GET /create 200 in 5709ms
+ ○ Compiling /docs ...
+ ✓ Compiled /docs in 935ms (2182 modules)
+ GET /docs 200 in 1830ms
+ ○ Compiling /pricing ...
+ ✓ Compiled /pricing in 3.2s (2195 modules)
+ GET /pricing 200 in 3802ms

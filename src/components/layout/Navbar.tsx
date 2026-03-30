@@ -41,7 +41,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className={`fixed left-1/2 -translate-x-1/2 z-[100] flex items-center justify-between w-[95%] max-w-7xl px-8 py-3 bg-[#050505]/60 backdrop-blur-lg border border-white/10 rounded-full shadow-[0_0_50px_rgba(0,0,0,0.8)] transition-all duration-700 ${scrolled ? "top-4 scale-[0.98]" : "top-8 scale-100"}`}>
+      <header className={`fixed left-1/2 -translate-x-1/2 z-[100] flex items-center justify-between w-[95%] max-w-7xl px-4 md:px-8 py-3 bg-[#050505]/60 backdrop-blur-lg border border-white/10 rounded-full shadow-[0_0_50px_rgba(0,0,0,0.8)] transition-all duration-700 ${scrolled ? "top-4 scale-[0.98]" : "top-8 scale-100"}`}>
         
         {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-2 group">
@@ -58,10 +58,10 @@ export default function Navbar() {
               <Link
                 key={link.name}
                 href={link.href}
-                className={`relative px-5 py-2 rounded-full font-headline font-bold tracking-[0.2em] uppercase text-[9px] transition-all duration-300 ${
+                className={`relative px-5 py-2 rounded-full font-headline font-bold tracking-[0.2em] uppercase text-[9px] transition-all duration-300 focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none ${
                   isActive 
                     ? "text-white" 
-                    : "text-neutral-500 hover:text-white"
+                    : "text-neutral-300 hover:text-white"
                 }`}
               >
                 {isActive && (
@@ -90,7 +90,7 @@ export default function Navbar() {
           
           <Link 
             href="/dashboard"
-            className="hidden sm:flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-white text-black shadow-[0_0_30px_rgba(255,255,255,0.1)] hover:scale-[1.02] active:scale-[0.98] transition-all group overflow-hidden relative"
+            className="hidden sm:flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-white text-black shadow-[0_0_30px_rgba(255,255,255,0.1)] hover:scale-[1.02] active:scale-[0.98] transition-all group overflow-hidden relative focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-purple-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <Shield size={14} strokeWidth={2.5} className="group-hover:rotate-12 transition-transform duration-500 relative z-10" />
@@ -102,7 +102,7 @@ export default function Navbar() {
           {/* Mobile Menu Toggle */}
           <button 
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden w-10 h-10 flex items-center justify-center rounded-full bg-white text-black active:scale-95 transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+            className="md:hidden w-11 h-11 flex items-center justify-center rounded-full bg-white text-black active:scale-95 transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none"
             aria-label="Toggle menu"
           >
             {isMenuOpen ? <X size={18} /> : <Menu size={18} />}
@@ -127,7 +127,7 @@ export default function Navbar() {
               className="absolute left-0 w-full h-px bg-cyan-400/20 shadow-[0_0_20px_#00f2ff] z-[100] pointer-events-none"
             />
 
-            <nav className="flex flex-col items-center gap-10 relative z-10 w-full px-12">
+            <nav className="flex flex-col items-center gap-12 py-10 overflow-y-auto relative z-10 w-full px-12 max-h-[90vh]">
               {navLinks.map((link, idx) => {
                 const isActive = pathname === link.href;
                 return (
@@ -146,7 +146,7 @@ export default function Navbar() {
                   >
                     <Link
                       href={link.href}
-                      className={`relative inline-block font-headline font-black text-5xl md:text-7xl tracking-tighter uppercase italic transition-all duration-300 ${
+                      className={`relative inline-block font-headline font-black text-4xl sm:text-5xl md:text-7xl tracking-tighter uppercase italic transition-all duration-300 ${
                         isActive ? "chromatic-text" : "text-neutral-700 hover:text-white"
                       }`}
                     >
@@ -173,7 +173,7 @@ export default function Navbar() {
               >
                 <Link 
                   href="/dashboard"
-                  className="flex items-center justify-center gap-4 px-10 py-6 rounded-3xl bg-white text-black font-headline font-black tracking-widest uppercase text-xs shadow-[0_0_50px_rgba(255,255,255,0.1)] hover:scale-105 active:scale-95 transition-all overflow-hidden relative group/btn"
+                  className="flex items-center justify-center gap-4 px-10 py-6 rounded-3xl bg-white text-black font-headline font-black tracking-widest uppercase text-xs shadow-[0_0_50px_rgba(255,255,255,0.1)] hover:scale-105 active:scale-95 transition-all overflow-hidden relative group/btn focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-purple-400/20 opacity-0 group-hover/btn:opacity-100 transition-opacity" />
                   <Shield size={20} className="relative z-10 group-hover/btn:rotate-12 transition-transform" />
