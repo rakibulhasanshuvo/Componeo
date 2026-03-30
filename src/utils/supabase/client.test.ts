@@ -30,6 +30,10 @@ describe('createClient', () => {
     delete process.env.NEXT_PUBLIC_SUPABASE_URL
     delete process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
+    // Set them to placeholder values to mimic testing fallback behavior mentioned in memory
+    process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://placeholder-url.supabase.co'
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'placeholder-key'
+
     createClient()
 
     expect(createBrowserClient).toHaveBeenCalledWith(
