@@ -9,7 +9,7 @@ import { ELITE_MOCK_COMPONENTS } from "./mockData";
  */
 export async function getComponents(category?: string): Promise<ComponentRow[]> {
   const supabase = await createClient();
-  const repository = new ComponentsRepository(supabase);
+  const repository = new ComponentsRepository(supabase as any);
   
   try {
     const data = await repository.getPublicComponents(category);
@@ -33,7 +33,7 @@ export async function getComponents(category?: string): Promise<ComponentRow[]> 
  */
 export async function getComponentById(id: string): Promise<ComponentRow | null> {
   const supabase = await createClient();
-  const repository = new ComponentsRepository(supabase);
+  const repository = new ComponentsRepository(supabase as any);
   
   try {
     const data = await repository.getComponentById(id);
