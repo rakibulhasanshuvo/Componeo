@@ -37,7 +37,7 @@ export async function getComponents(category?: string): Promise<ComponentRow[]> 
  */
 const fetchComponent = cache(async (id: string): Promise<ComponentRow | null> => {
   const supabase = await createClient();
-  const repository = new ComponentsRepository(supabase);
+  const repository = new ComponentsRepository(supabase as any);
   
   try {
     const supabase = await createClient();

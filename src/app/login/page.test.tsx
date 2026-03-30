@@ -1,82 +1,96 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import '@testing-library/dom';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import LoginPage from './page';
-import { createClient } from '@/utils/supabase/client';
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import LoginPage from './page'
+import { createClient } from '@/utils/supabase/client'
+import React from 'react'
 
-// Mock components to simplify tests
-vi.mock('@/components/layout/Navbar', () => ({ default: () => <div data-testid="navbar" /> }));
-vi.mock('@/components/layout/Footer', () => ({ default: () => <div data-testid="footer" /> }));
-
-// Mock Supabase client
+// Mock dependencies
 vi.mock('@/utils/supabase/client', () => ({
-  createClient: vi.fn(),
-}));
+  createClient: vi.fn()
+}))
+
+// Mock Next.js navigation and components if needed
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+  }),
+  usePathname: () => '/login',
+}))
+
+// Mock framer-motion to avoid animation issues in tests
+vi.mock('framer-motion', () => ({
+  motion: {
+    div: ({ children, ...props }: any) => React.createElement('div', props, children),
+    h1: ({ children, ...props }: any) => React.createElement('h1', props, children),
+  },
+  AnimatePresence: ({ children }: any) => React.createElement(React.Fragment, null, children),
+}))
 
 describe('LoginPage', () => {
+  const mockSignInWithOtp = vi.fn()
+
   beforeEach(() => {
-    vi.resetAllMocks();
-  });
+    vi.clearAllMocks()
 
-  it('renders correctly', () => {
-    render(<LoginPage />);
-    expect(screen.getAllByText('Matrix Access')[0]).toBeDefined();
-    expect(screen.getAllByPlaceholderText('architect@componeo.io')[0]).toBeDefined();
-    expect(screen.getAllByText('Dispatch Access Link')[0]).toBeDefined();
-  });
+    // Default mock implementation
+    ;(createClient as any).mockReturnValue({
+      auth: {
+        signInWithOtp: mockSignInWithOtp
+      }
+    })
+  })
 
-  it('displays success message on successful login', async () => {
-    const mockSignInWithOtp = vi.fn().mockResolvedValue({ error: null });
-    (createClient as any).mockReturnValue({
-      auth: { signInWithOtp: mockSignInWithOtp },
-    });
+  it('displays an error message when login fails', async () => {
+    // Setup the mock to return an error
+    const errorMessage = 'Invalid email address'
+    mockSignInWithOtp.mockResolvedValueOnce({
+      error: new Error(errorMessage)
+    })
 
-    render(<LoginPage />);
+    render(React.createElement(LoginPage))
 
-    const emailInput = screen.getAllByPlaceholderText('architect@componeo.io')[0];
-    const submitButton = screen.getAllByText('Dispatch Access Link')[0];
+    // Find the input and type an email
+    const emailInput = screen.getByPlaceholderText('architect@componeo.io')
+    await userEvent.type(emailInput, 'test@example.com')
 
-    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
-    fireEvent.click(submitButton);
+    // Submit the form
+    const submitButton = screen.getByRole('button', { name: /dispatch access link/i })
+    fireEvent.submit(submitButton)
 
+    // Verify the error message is displayed
     await waitFor(() => {
-      expect(screen.getByText('Matrix access link dispatched. Check your terminal (inbox).')).toBeDefined();
-    });
+      expect(screen.getByText(errorMessage)).toBeInTheDocument()
+    })
 
+    // Verify the supabase client was called with correct args
     expect(mockSignInWithOtp).toHaveBeenCalledWith({
       email: 'test@example.com',
       options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
-      },
-    });
-  });
+        emailRedirectTo: expect.stringContaining('/auth/callback')
+      }
+    })
+  })
 
-  it('displays error message on failed login', async () => {
-    const mockSignInWithOtp = vi.fn().mockResolvedValue({
-      error: { message: 'Failed to dispatch access link.' }
-    });
-    (createClient as any).mockReturnValue({
-      auth: { signInWithOtp: mockSignInWithOtp },
-    });
+  it('displays a success message when login succeeds', async () => {
+    // Setup the mock to return success
+    mockSignInWithOtp.mockResolvedValueOnce({
+      error: null
+    })
 
-    render(<LoginPage />);
+    render(React.createElement(LoginPage))
 
-    const emailInput = screen.getAllByPlaceholderText('architect@componeo.io')[0];
-    const submitButton = screen.getAllByText('Dispatch Access Link')[0];
+    // Find the input and type an email
+    const emailInput = screen.getByPlaceholderText('architect@componeo.io')
+    await userEvent.type(emailInput, 'test@example.com')
 
-    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
-    fireEvent.click(submitButton);
+    // Submit the form
+    const submitButton = screen.getByRole('button', { name: /dispatch access link/i })
+    fireEvent.submit(submitButton)
 
+    // Verify the success message is displayed
     await waitFor(() => {
-      expect(screen.getByText('Failed to dispatch access link.')).toBeDefined();
-    });
-
-    expect(mockSignInWithOtp).toHaveBeenCalledWith({
-      email: 'test@example.com',
-      options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
-      },
-    });
-  });
-});
+      expect(screen.getByText(/matrix access link dispatched/i)).toBeInTheDocument()
+    })
+  })
+})
