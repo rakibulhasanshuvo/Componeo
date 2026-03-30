@@ -20,7 +20,7 @@ const createComponentSchema = z.object({
   category: z.enum(["Cursors", "Backgrounds", "Layouts", "Buttons", "Micro-Animations"]),
   code: z.string().min(10, "Component code is too short for a valid forge."),
   is_public: z.boolean(),
-  thumbnail: typeof window !== "undefined" ? z.instanceof(File).optional() : z.any().optional(),
+thumbnail: typeof window !== "undefined" ? z.instanceof(File).optional() : z.any().optional(),
 });
 
 export type CreateComponentValues = z.infer<typeof createComponentSchema>;
@@ -68,8 +68,7 @@ export default function CreateForm({
     try {
       await onSubmit(data);
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : "Forge Overheat: Critical failure saving component.";
-      onSaveError(errorMessage);
+      onSaveError(err instanceof Error ? err.message : "Forge Overheat: Critical failure saving component.");
     }
   };
 
