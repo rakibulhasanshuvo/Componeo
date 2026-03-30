@@ -273,7 +273,7 @@ export default function DocsPage() {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 px-6 md:px-12 lg:px-20 py-12 md:py-16 min-w-0 elite-content">
+        <main className="flex-1 px-4 md:px-12 lg:px-20 py-12 md:py-16 min-w-0 elite-content overflow-hidden md:overflow-visible">
           <AnimatePresence mode="wait">
             {activeSection === "tokens" && (
               <motion.div
@@ -284,7 +284,7 @@ export default function DocsPage() {
                 transition={{ duration: 0.5 }}
               >
                 <header className="mb-20">
-                  <h1 className="text-6xl md:text-8xl font-black font-headline tracking-tighter text-white mb-8 italic uppercase">
+                  <h1 className="text-4xl sm:text-6xl md:text-8xl font-black font-headline tracking-tighter text-white mb-8 italic uppercase">
                     Design <span className="chromatic-text">Tokens</span>
                   </h1>
                   
@@ -312,8 +312,8 @@ export default function DocsPage() {
                     
                     <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
                       <div className="refractive-glass p-1 p-[1px] rounded-[2.5rem] bg-gradient-to-br from-white/10 to-transparent group overflow-hidden">
-                        <div className="bg-[#080808] p-10 rounded-[2.4rem] h-full space-y-8 relative">
-                          <div className="flex items-center justify-between relative z-10">
+                        <div className="bg-[#080808] p-6 sm:p-10 rounded-[2.4rem] h-full space-y-8 relative">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
                             <div className="flex items-center gap-6">
                               <div className="w-20 h-20 rounded-[1.5rem] bg-cyan-400 neon-glow-cyan shadow-[0_0_40px_rgba(0,242,255,0.3)] relative group-hover:scale-105 transition-transform duration-500">
                                  <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent rounded-inherit" />
@@ -335,8 +335,8 @@ export default function DocsPage() {
                       </div>
 
                       <div className="refractive-glass p-1 p-[1px] rounded-[2.5rem] bg-gradient-to-br from-purple-500/20 to-transparent group overflow-hidden">
-                        <div className="bg-[#080808] p-10 rounded-[2.4rem] h-full space-y-8 relative">
-                          <div className="flex items-center justify-between relative z-10">
+                        <div className="bg-[#080808] p-6 sm:p-10 rounded-[2.4rem] h-full space-y-8 relative">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
                             <div className="flex items-center gap-6">
                               <div className="w-20 h-20 rounded-[1.5rem] bg-purple-500 shadow-[0_0_40px_rgba(188,19,254,0.3)] relative group-hover:scale-105 transition-transform duration-500">
                                  <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent rounded-inherit" />
@@ -361,8 +361,8 @@ export default function DocsPage() {
                     {/* Code Snippet HUD */}
                     <div className="relative group/code">
                       <div className="absolute -inset-[1px] bg-gradient-to-r from-cyan-400/20 via-transparent to-purple-400/20 rounded-[2.5rem] opacity-0 group-hover/code:opacity-100 transition-opacity duration-700 blur-sm" />
-                      <div className="relative glass-premium rounded-[2.5rem] overflow-hidden border border-white/5 shadow-2xl bg-black/40 backdrop-blur-3xl">
-                        <div className="bg-white/[0.04] px-10 py-5 flex justify-between items-center border-b border-white/5">
+                      <div className="relative glass-premium rounded-[2.5rem] overflow-hidden border border-white/5 shadow-2xl bg-black/40 backdrop-blur-3xl max-w-full">
+                        <div className="bg-white/[0.04] px-6 sm:px-10 py-5 flex flex-wrap gap-4 justify-between items-center border-b border-white/5">
                           <div className="flex items-center gap-4">
                             <div className="flex gap-1.5">
                               <div className="w-2 h-2 rounded-full bg-red-400/20" />
@@ -379,7 +379,7 @@ export default function DocsPage() {
                             </button>
                           </div>
                         </div>
-                        <div className="p-12 text-sm overflow-x-auto font-headline">
+                        <div className="p-6 sm:p-12 text-xs sm:text-sm overflow-x-auto font-headline">
                           {/* eslint-disable-next-line react/no-unescaped-entities */}
                           <pre className="text-neutral-400 leading-relaxed font-mono">
                             <span className="text-neutral-700">{`// System initialized: loading palette_v1.0`}</span>{"\n"}
@@ -489,7 +489,7 @@ export default function DocsPage() {
                 transition={{ duration: 0.5 }}
               >
                 <header className="mb-20">
-                  <h1 className="text-6xl md:text-8xl font-black font-headline tracking-tighter text-white mb-8 italic uppercase">
+                  <h1 className="text-4xl sm:text-6xl md:text-8xl font-black font-headline tracking-tighter text-white mb-8 italic uppercase">
                     Atomic <span className="chromatic-text">Buttons</span>
                   </h1>
                   <p className="text-xl text-neutral-400 leading-relaxed max-w-3xl font-body">
@@ -535,8 +535,8 @@ export default function DocsPage() {
                       </div>
 
                       {/* Code Sample */}
-                      <div id="logic" className="relative glass-premium rounded-[2.5rem] overflow-hidden border border-white/5 bg-black/40 backdrop-blur-3xl">
-                         <div className="bg-white/[0.04] px-10 py-5 flex justify-between items-center border-b border-white/5">
+                      <div id="logic" className="relative glass-premium rounded-[2.5rem] overflow-hidden border border-white/5 bg-black/40 backdrop-blur-3xl max-w-full">
+                         <div className="bg-white/[0.04] px-6 sm:px-10 py-5 flex flex-wrap gap-4 justify-between items-center border-b border-white/5">
                             <span className="text-[10px] font-headline font-black uppercase tracking-[0.35em] text-neutral-500 italic">src/components/EliteButton.tsx</span>
                             <button 
                               onClick={() => handleCopy('export const EliteButton = () => <button className="bg-cyan-400 text-black px-10 py-4 font-black rounded-xl">ELITE_ACTION</button>', 'btn-copy')}
@@ -548,7 +548,7 @@ export default function DocsPage() {
                                <Copy size={12} className={`transition-colors ${copiedId === 'btn-copy' ? 'text-cyan-400' : 'text-neutral-600 group-hover/copy:text-cyan-400'}`} />
                             </button>
                          </div>
-                         <div className="p-10 font-mono text-sm">
+                         <div className="p-6 sm:p-10 font-mono text-xs sm:text-sm overflow-x-auto">
                             {/* eslint-disable-next-line react/no-unescaped-entities */}
                             <pre className="text-neutral-400">
                                <span className="text-purple-400">export const</span> <span className="text-white">EliteButton</span> = () =&gt; ({"\n"}
@@ -573,7 +573,7 @@ export default function DocsPage() {
                 transition={{ duration: 0.5 }}
               >
                 <header className="mb-20">
-                  <h1 className="text-6xl md:text-8xl font-black font-headline tracking-tighter text-white mb-8 italic uppercase">
+                  <h1 className="text-4xl sm:text-6xl md:text-8xl font-black font-headline tracking-tighter text-white mb-8 italic uppercase">
                     Refractive <span className="chromatic-text">Inputs</span>
                   </h1>
                   <p className="text-xl text-neutral-400 leading-relaxed max-w-3xl font-body">
@@ -618,7 +618,7 @@ export default function DocsPage() {
                 transition={{ duration: 0.5 }}
               >
                 <header className="mb-20">
-                  <h1 className="text-6xl md:text-[120px] font-black font-headline tracking-tighter text-white mb-8 italic uppercase leading-[0.85]">
+                  <h1 className="text-4xl sm:text-6xl md:text-[120px] font-black font-headline tracking-tighter text-white mb-8 italic uppercase leading-[0.85]">
                     Matrix <span className="chromatic-text">Grid</span>
                   </h1>
                   <p className="text-xl text-neutral-400 leading-relaxed max-w-3xl font-body uppercase tracking-tighter">
@@ -663,7 +663,7 @@ export default function DocsPage() {
                 transition={{ duration: 0.5 }}
               >
                 <header className="mb-20">
-                  <h1 className="text-6xl md:text-[120px] font-black font-headline tracking-tighter text-white mb-8 italic uppercase leading-[0.85]">
+                  <h1 className="text-4xl sm:text-6xl md:text-[120px] font-black font-headline tracking-tighter text-white mb-8 italic uppercase leading-[0.85]">
                      Core <span className="chromatic-text">Genesis</span>
                   </h1>
                   <p className="text-xl text-neutral-400 leading-relaxed max-w-3xl font-body uppercase tracking-tighter">
@@ -703,7 +703,7 @@ export default function DocsPage() {
                 transition={{ duration: 0.5 }}
               >
                 <header className="mb-20">
-                  <h1 className="text-6xl md:text-8xl font-black font-headline tracking-tighter text-white mb-8 italic uppercase">
+                  <h1 className="text-4xl sm:text-6xl md:text-8xl font-black font-headline tracking-tighter text-white mb-8 italic uppercase">
                      System <span className="chromatic-text">Injection</span>
                   </h1>
                   <p className="text-xl text-neutral-400 leading-relaxed max-w-3xl font-body uppercase tracking-tighter">
@@ -716,8 +716,8 @@ export default function DocsPage() {
                       <h3 className="text-[10px] font-headline font-black text-neutral-500 uppercase tracking-[0.3em] font-black">Step 01: Core Installation</h3>
                       <div className="relative group/cli overflow-hidden">
                          <div className="absolute top-0 right-0 w-12 h-12 bg-cyan-400/10 blur-3xl group-hover/cli:bg-cyan-400/20 transition-colors" />
-                         <div className="glass-premium p-8 rounded-2xl flex items-center justify-between border border-white/5 bg-black/60 shadow-2xl">
-                            <code className="text-white font-mono text-sm tracking-tighter">
+                         <div className="glass-premium p-6 sm:p-8 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border border-white/5 bg-black/60 shadow-2xl">
+                            <code className="text-white font-mono text-xs sm:text-sm tracking-tighter break-all">
                                <span className="text-cyan-400">npm</span> install <span className="text-purple-400">@componeo/core</span> framer-motion lucide-react
                             </code>
                             <button 
@@ -735,8 +735,8 @@ export default function DocsPage() {
                       <div className="relative group/cli overflow-hidden">
                          <div className="glass-premium p-8 rounded-2xl border border-white/5 bg-black/60 shadow-2xl space-y-4">
                             <p className="text-neutral-400 text-xs font-body mb-4">Add the Componeo preset to your <code className="text-cyan-400">tailwind.config.ts</code></p>
-                            <div className="flex justify-between items-center bg-white/[0.02] p-4 rounded-xl border border-white/5">
-                               <code className="text-neutral-400 font-mono text-[11px]">
+                            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white/[0.02] p-4 rounded-xl border border-white/5">
+                               <code className="text-neutral-400 font-mono text-[11px] break-all">
                                   plugins: [require(&quot;@componeo/tailwind-preset&quot;)]
                                </code>
                                <button 
@@ -762,7 +762,7 @@ export default function DocsPage() {
                 transition={{ duration: 0.5 }}
               >
                 <header className="mb-20">
-                  <h1 className="text-6xl md:text-8xl font-black font-headline tracking-tighter text-white mb-8 italic uppercase">
+                  <h1 className="text-4xl sm:text-6xl md:text-8xl font-black font-headline tracking-tighter text-white mb-8 italic uppercase">
                      Terminal <span className="chromatic-text">Forge</span>
                   </h1>
                   <p className="text-xl text-neutral-400 leading-relaxed max-w-3xl font-body uppercase tracking-tighter">
@@ -833,7 +833,7 @@ export default function DocsPage() {
                 transition={{ duration: 0.5 }}
               >
                 <header className="mb-20">
-                  <h1 className="text-6xl md:text-8xl font-black font-headline tracking-tighter text-white mb-8 italic uppercase text-right">
+                  <h1 className="text-4xl sm:text-6xl md:text-8xl font-black font-headline tracking-tighter text-white mb-8 italic uppercase text-right">
                      Visual <span className="chromatic-text">Syntax</span>
                   </h1>
                   <p className="text-xl text-neutral-400 leading-relaxed max-w-3xl font-body uppercase tracking-tighter ml-auto text-right">
@@ -863,8 +863,8 @@ export default function DocsPage() {
                       </div>
                    </div>
 
-                   <div id="config" className="relative glass-premium rounded-[3rem] overflow-hidden border border-white/5 bg-black/40 p-12">
-                      <div className="flex justify-between items-center mb-8">
+                   <div id="config" className="relative glass-premium rounded-[3rem] overflow-hidden border border-white/5 bg-black/40 p-6 sm:p-12">
+                      <div className="flex flex-wrap gap-4 justify-between items-center mb-8">
                          <h4 className="text-xl font-black font-headline text-white uppercase italic tracking-widest">Global_Theme_Config</h4>
                          <button 
                            onClick={() => handleCopy('@layer base {\n  :root {\n    --glass-blur: 24px;\n    --glass-opacity: 0.03;\n    --neon-cyan: #00f2ff;\n  }\n}', 'css-copy')}
@@ -899,7 +899,7 @@ export default function DocsPage() {
                 transition={{ duration: 0.5 }}
               >
                 <header className="mb-20">
-                  <h1 className="text-6xl md:text-8xl font-black font-headline tracking-tighter text-white mb-8 italic uppercase">
+                  <h1 className="text-4xl sm:text-6xl md:text-8xl font-black font-headline tracking-tighter text-white mb-8 italic uppercase">
                      Logic <span className="chromatic-text">Pulses</span>
                   </h1>
                   <p className="text-xl text-neutral-400 leading-relaxed max-w-3xl font-body uppercase tracking-tighter">
@@ -954,7 +954,7 @@ export default function DocsPage() {
                 transition={{ duration: 0.5 }}
               >
                 <header className="mb-20">
-                  <h1 className="text-6xl md:text-[120px] font-black font-headline tracking-tighter text-white mb-8 italic uppercase leading-[0.85]">
+                  <h1 className="text-4xl sm:text-6xl md:text-[120px] font-black font-headline tracking-tighter text-white mb-8 italic uppercase leading-[0.85]">
                      Shield <span className="chromatic-text">Protocol</span>
                   </h1>
                   <p className="text-xl text-neutral-400 leading-relaxed max-w-3xl font-body uppercase tracking-tighter">

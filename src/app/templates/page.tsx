@@ -59,11 +59,11 @@ export default function TemplatesPage() {
     <div className="asymmetric-gradient min-h-screen text-white selection:bg-cyan-400 selection:text-black">
       <Navbar />
 
-      <main className="pt-40 pb-32 px-10 max-w-7xl mx-auto">
+      <main className="pt-40 pb-32 px-4 md:px-10 max-w-7xl mx-auto overflow-hidden md:overflow-visible">
         {/* Header Section */}
         <header className="mb-32 relative">
-          <div className="absolute -top-32 -left-32 w-[30rem] h-[30rem] bg-cyan-400/10 rounded-full blur-[120px] pointer-events-none" />
-          <div className="absolute top-0 right-0 w-96 h-96 bg-purple-500/5 rounded-full blur-[100px] pointer-events-none" />
+          <div className="absolute -top-32 -left-32 w-full max-w-[30rem] h-[30rem] bg-cyan-400/10 rounded-full blur-[120px] pointer-events-none" />
+          <div className="absolute top-0 right-0 w-full max-w-96 h-96 bg-purple-500/5 rounded-full blur-[100px] pointer-events-none" />
           
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
@@ -80,7 +80,7 @@ export default function TemplatesPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="font-headline text-5xl sm:text-7xl md:text-9xl font-black tracking-tighter mb-10 leading-tight pb-2 uppercase italic"
+            className="font-headline text-4xl sm:text-6xl md:text-9xl font-black tracking-tighter mb-10 leading-tight pb-2 uppercase italic"
           >
             TEMPLATES <br />
             <span className="chromatic-text">LIBRARY</span>
@@ -206,7 +206,7 @@ export default function TemplatesPage() {
               <span className="ml-4 font-headline text-[9px] text-neutral-600 tracking-[0.3em] uppercase font-black italic">Install_Componeo.sh</span>
             </div>
             
-            <div className="p-10 font-headline text-sm leading-[1.8] text-neutral-400 bg-black/40">
+            <div className="p-10 font-headline text-sm leading-[1.8] text-neutral-400 bg-black/40 overflow-x-auto">
               <div className="flex gap-8">
                 <span className="text-cyan-400/20 select-none w-4 font-black">01</span>
                 <code className="text-white"><span className="text-cyan-400">npm i</span> @componeo/templates-react</code>
