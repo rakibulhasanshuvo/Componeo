@@ -68,6 +68,7 @@ export async function createComponent(data: z.infer<typeof CreateComponentSchema
   try {
     const { thumbnail, ...componentData } = validated.data;
 
+    // Type constraints enforced at repository level
     await repository.createComponent({
       ...componentData,
       thumbnail_url,
