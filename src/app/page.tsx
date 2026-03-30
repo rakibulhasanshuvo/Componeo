@@ -48,22 +48,22 @@ export default async function HomePage({ searchParams }: PageProps) {
               
               <div className="flex items-center gap-8 border-l border-white/5 pl-8 py-2 hidden xl:flex">
                  <div className="space-y-1">
-                   <div className="text-[10px] font-headline font-black text-neutral-600 uppercase tracking-widest">Active Units</div>
+                   <div className="text-[10px] font-headline font-black text-neutral-400 uppercase tracking-widest">Active Units</div>
                    <div className="text-xl font-headline font-black text-white italic">{components.length.toString().padStart(2, '0')}</div>
                  </div>
                  <div className="space-y-1">
-                   <div className="text-[10px] font-headline font-black text-neutral-600 uppercase tracking-widest">Stability</div>
+                   <div className="text-[10px] font-headline font-black text-neutral-400 uppercase tracking-widest">Stability</div>
                    <div className="text-xl font-headline font-black text-emerald-400 italic">99.8%</div>
                  </div>
                  <div className="space-y-1">
-                   <div className="text-[10px] font-headline font-black text-neutral-600 uppercase tracking-widest">Threat Level</div>
+                   <div className="text-[10px] font-headline font-black text-neutral-400 uppercase tracking-widest">Threat Level</div>
                    <div className="text-xl font-headline font-black text-white italic">0.0</div>
                  </div>
               </div>
             </div>
 
             <div className="max-w-xl">
-              <p className="text-sm font-body text-neutral-500 leading-relaxed">
+              <p className="text-sm font-body text-neutral-300 leading-relaxed">
                 Archival access to high-fidelity React modules designed for the Componeo ecosystem. 
                 Every unit in the matrix is verified for atomic stability and performance optimization.
               </p>
@@ -95,13 +95,13 @@ export default async function HomePage({ searchParams }: PageProps) {
                     <h2 className="font-headline text-3xl font-black text-white uppercase tracking-tighter italic">
                       Registry Offline
                     </h2>
-                    <p className="text-neutral-500 font-body max-w-sm mx-auto text-sm leading-relaxed">
+                    <p className="text-neutral-300 font-body max-w-sm mx-auto text-sm leading-relaxed">
                       All atomic units are currently de-materialized. Initialize the Forge to synthesize new components.
                     </p>
                   </div>
                   <Link 
-                    href="/dashboard"
-                    className="inline-flex items-center gap-3 bg-white text-black py-4 px-10 rounded-2xl font-headline font-black text-xs uppercase tracking-widest hover:bg-cyan-400 transition-all duration-500 shadow-2xl group"
+                    href="/create"
+                    className="inline-flex items-center gap-3 bg-white text-black py-4 px-10 rounded-2xl font-headline font-black text-xs uppercase tracking-widest hover:bg-cyan-400 transition-all duration-500 shadow-2xl group focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none"
                   >
                     Enter the Forge
                     <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform" />
