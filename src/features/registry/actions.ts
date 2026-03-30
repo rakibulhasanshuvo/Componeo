@@ -13,7 +13,13 @@ const fetchComponents = cache(async (category?: string) => {
       try {
         const supabase = createStaticClient();
         const repository = new ComponentsRepository(supabase as any);
-        const data = await repository.getPublicComponents(category);
+        let data: ComponentRow[];
+        try {
+          data = await repository.getPublicComponents(category);
+        } catch (dbError) {
+          console.error("SYSTEM: [Database_Error] Fetching components failed:", dbError);
+          return ELITE_MOCK_COMPONENTS as any;
+        }
 
         // If database is empty, provide the architectural fallback for "Elite" onboarding
         if (data.length === 0) {
