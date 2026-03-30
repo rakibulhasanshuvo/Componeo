@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { 
   Layers, 
   MousePointer2, 
@@ -22,6 +22,7 @@ const CATEGORIES = [
 
 export default function FilterBar() {
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const currentCategory = searchParams.get("category") || "All Units";
 
@@ -32,7 +33,7 @@ export default function FilterBar() {
     } else {
       params.set("category", name);
     }
-    router.push(`?${params.toString()}`, { scroll: false });
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
   return (
