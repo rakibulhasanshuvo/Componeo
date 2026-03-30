@@ -78,7 +78,7 @@ export default function CreateComponentPage() {
     const checkUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        router.push("/login?next=/create");
+        setIsLoadingAuth(false);
         return;
       }
       setUser(user);
