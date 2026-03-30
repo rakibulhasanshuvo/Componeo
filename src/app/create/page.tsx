@@ -105,7 +105,7 @@ export default function CreateComponentPage() {
       }
       router.push("/");
       router.refresh();
-    } catch (err: any) {
+    } catch (err: unknown) {
       setSaveError("FORGE_OVERHEAT: A critical systemic failure occurred during fusion.");
     } finally {
       setIsSaving(false);
@@ -306,7 +306,7 @@ export default function CreateComponentPage() {
                                  <div className="space-y-3">
                                    <h3 className="font-headline text-5xl font-black text-white italic tracking-tighter uppercase leading-none">Sync Validated</h3>
                                    <p className="text-neutral-500 font-body text-[10px] tracking-[0.2em] max-w-sm mx-auto leading-relaxed uppercase opacity-60">
-                                     Unit ID: <span className="text-white">COMPONEO-ELITE-{Math.random().toString(36).substr(2, 6).toUpperCase()}</span>
+                                     Unit ID: <span className="text-white">COMPONEO-ELITE-{crypto.randomUUID().split('-')[0].toUpperCase()}</span>
                                    </p>
                                    <p className="text-neutral-400 font-body text-xs max-w-sm mx-auto leading-relaxed uppercase tracking-tighter pt-4">
                                      Your unit has been validated against the <span className="text-cyan-400 font-bold">Forge Protocol</span>. Integration ready.
