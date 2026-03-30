@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { getComponents, getComponentById } from './actions';
 import { ELITE_MOCK_COMPONENTS } from './mockData';
+import { createClient } from '@/utils/supabase/server';
 
 const mockGetPublicComponents = vi.fn();
 const mockGetComponentById = vi.fn();
@@ -68,6 +69,16 @@ describe('Registry Actions', () => {
       expect(console.error).toHaveBeenCalledWith('SYSTEM: [Database_Error] Fetching components failed:', testError);
     });
 
+    it('should return ELITE_MOCK_COMPONENTS when createClient throws an error', async () => {
+      const testError = new Error('Supabase client initialization failed');
+      vi.mocked(createClient).mockRejectedValueOnce(testError);
+
+      const result = await getComponents();
+
+      expect(result).toEqual(ELITE_MOCK_COMPONENTS);
+      expect(console.error).toHaveBeenCalledWith('SYSTEM: [Database_Error] Fetching components failed:', testError);
+    });
+
     it('should return ELITE_MOCK_COMPONENTS when repository throws an error for a specific category', async () => {
       const testError = new Error('Database connection failed for category');
       mockGetPublicComponents.mockRejectedValue(testError);
@@ -111,6 +122,18 @@ describe('Registry Actions', () => {
     it('should fallback to ELITE_MOCK_COMPONENTS when repository throws an error', async () => {
       const testError = new Error('Database connection failed');
       mockGetComponentById.mockRejectedValue(testError);
+
+      // Use the first ID from mock data for testing
+      const testId = ELITE_MOCK_COMPONENTS[0].id;
+      const result = await getComponentById(testId);
+
+      expect(result).toEqual(ELITE_MOCK_COMPONENTS[0]);
+      expect(console.error).toHaveBeenCalledWith(`SYSTEM: [Database_Error] Fetching component ${testId} failed:`, testError);
+    });
+
+    it('should fallback to ELITE_MOCK_COMPONENTS when createClient throws an error', async () => {
+      const testError = new Error('Supabase client initialization failed');
+      vi.mocked(createClient).mockRejectedValueOnce(testError);
 
       // Use the first ID from mock data for testing
       const testId = ELITE_MOCK_COMPONENTS[0].id;
