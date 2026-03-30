@@ -128,6 +128,7 @@ export default function TemplatesPage() {
               className={`glass-premium group relative overflow-hidden rounded-[2.5rem] border border-white/5 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl ${template.glow}`}
             >
               <div className="aspect-video w-full overflow-hidden relative">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img 
                   src={template.image} 
                   alt={template.title}
@@ -212,7 +213,7 @@ export default function TemplatesPage() {
               </div>
               <div className="flex gap-8">
                 <span className="text-cyan-400/20 select-none w-4 font-black">02</span>
-                <code><span className="text-purple-400">import</span> &#123; Shell &#125; <span className="text-purple-400">from</span> <span className="text-blue-400">'@componeo/core'</span>;</code>
+                <code><span className="text-purple-400">import</span> &#123; Shell &#125; <span className="text-purple-400">from</span> <span className="text-blue-400">&apos;@componeo/core&apos;</span>;</code>
               </div>
               <div className="flex gap-8">
                 <span className="text-cyan-400/20 select-none w-4 font-black">03</span>
@@ -224,7 +225,7 @@ export default function TemplatesPage() {
               </div>
               <div className="flex gap-8">
                 <span className="text-cyan-400/20 select-none w-4 font-black">05</span>
-                <code>&nbsp;&nbsp;&lt;Shell <span className="text-cyan-400">theme</span>=<span className="text-blue-400">"liquid-glass"</span>&gt;</code>
+                <code>&nbsp;&nbsp;&lt;Shell <span className="text-cyan-400">theme</span>=<span className="text-blue-400">&quot;liquid-glass&quot;</span>&gt;</code>
               </div>
               <div className="flex gap-8">
                 <span className="text-cyan-400/20 select-none w-4 font-black">06</span>

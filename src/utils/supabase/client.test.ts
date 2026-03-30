@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { createBrowserClient } from '@supabase/ssr'
 import { createClient } from './client'
 
@@ -7,17 +7,16 @@ vi.mock('@supabase/ssr', () => ({
 }))
 
 describe('createClient', () => {
+  const originalEnv = process.env
+
   beforeEach(() => {
     vi.resetAllMocks()
-  })
-
-  afterEach(() => {
-    vi.unstubAllEnvs()
+    process.env = { ...originalEnv }
   })
 
   it('calls createBrowserClient with provided environment variables', () => {
-    vi.stubEnv('NEXT_PUBLIC_SUPABASE_URL', 'https://custom-url.supabase.co')
-    vi.stubEnv('NEXT_PUBLIC_SUPABASE_ANON_KEY', 'custom-key')
+    process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://custom-url.supabase.co'
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'custom-key'
 
     createClient()
 

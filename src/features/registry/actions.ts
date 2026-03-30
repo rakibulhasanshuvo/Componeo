@@ -9,6 +9,9 @@ import { ELITE_MOCK_COMPONENTS } from "./mockData";
  * Fetch all public components for the registry.
  */
 export async function getComponents(category?: string): Promise<ComponentRow[]> {
+  const supabase = await createClient();
+  const repository = new ComponentsRepository(supabase as any);
+  
   try {
     const supabase = await createClient();
     const repository = new ComponentsRepository(supabase);
