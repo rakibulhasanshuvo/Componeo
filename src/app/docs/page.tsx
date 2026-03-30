@@ -351,7 +351,7 @@ export default function DocsPage() {
                             </div>
                           </div>
                           <p className="text-neutral-400 leading-relaxed font-body text-sm relative z-10">
-                            Our signature "energy" accent. Reserved for supplemental overlays, active logic paths, and high-frequency UI pulses.
+                            Our signature &quot;energy&quot; accent. Reserved for supplemental overlays, active logic paths, and high-frequency UI pulses.
                           </p>
                           <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-purple-500/5 blur-[60px] pointer-events-none group-hover:bg-purple-500/10 transition-colors" />
                         </div>
@@ -380,18 +380,19 @@ export default function DocsPage() {
                           </div>
                         </div>
                         <div className="p-12 text-sm overflow-x-auto font-headline">
+                          {/* eslint-disable-next-line react/no-unescaped-entities */}
                           <pre className="text-neutral-400 leading-relaxed font-mono">
-                            <span className="text-neutral-700">// System initialized: loading palette_v1.0</span>{"\n"}
+                            <span className="text-neutral-700">{`// System initialized: loading palette_v1.0`}</span>{"\n"}
                             <span className="text-purple-400">export const</span> <span className="text-white">MatrixTheme</span> = &#123;{"\n"}
                             {"  "}colors: &#123;{"\n"}
-                            {"    "}void: <span className="text-cyan-400">'#050505'</span>,{"\n"}
-                            {"    "}refractive: <span className="text-cyan-400">'rgba(255, 255, 255, 0.03)'</span>,{"\n"}
-                            {"    "}glow: <span className="text-cyan-400">'#00f2ff'</span>,{"\n"}
-                            {"    "}accent: <span className="text-purple-400">'#bc13fe'</span>{"\n"}
+                            {"    "}void: <span className="text-cyan-400">&apos;#050505&apos;</span>,{"\n"}
+                            {"    "}refractive: <span className="text-cyan-400">&apos;rgba(255, 255, 255, 0.03)&apos;</span>,{"\n"}
+                            {"    "}glow: <span className="text-cyan-400">&apos;#00f2ff&apos;</span>,{"\n"}
+                            {"    "}accent: <span className="text-purple-400">&apos;#bc13fe&apos;</span>{"\n"}
                             {"  "}&#125;,{"\n"}
                             {"  "}effects: &#123;{"\n"}
-                            {"    "}blur: <span className="text-cyan-400">'24px'</span>,{"\n"}
-                            {"    "}refraction: <span className="text-cyan-400">'standard'</span>{"\n"}
+                            {"    "}blur: <span className="text-cyan-400">&apos;24px&apos;</span>,{"\n"}
+                            {"    "}refraction: <span className="text-cyan-400">&apos;standard&apos;</span>{"\n"}
                             {"  "}&#125;{"\n"}
                             &#125;;
                           </pre>
@@ -445,6 +446,7 @@ export default function DocsPage() {
                   <section id="visual">
                     <div className="grid grid-cols-12 gap-8">
                       <div className="col-span-12 xl:col-span-7 h-[28rem] relative rounded-[2.5rem] overflow-hidden group">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img 
                           src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKXHHxbLSpa9XA-wIEsQ0RM9dTqQwiMOrxxO6MZjVx9FCNxK_uk0Q3ZWbl2EeNyu31VYkrvcxesR-avsXcPserfKJfZB8aFpSrMCIOc1yQKStw6Mpl1tv_gvNcBY-Muwz6nlbj8MsqEhpMBFpoGLzK8KEEL3X2xT0rCkwKJiOePqPFelO7RkbghczOz7worEgD3EQ8XX6s5dEUHFUzzD6WMRFRkI4QYrQSbtaIseF58JZguO0QdvhYm8yoLZwKYHPxCspAbYjRQuA"
                           className="w-full h-full object-cover grayscale opacity-20 mix-blend-screen transition-transform duration-1000 group-hover:scale-110"
@@ -547,9 +549,10 @@ export default function DocsPage() {
                             </button>
                          </div>
                          <div className="p-10 font-mono text-sm">
+                            {/* eslint-disable-next-line react/no-unescaped-entities */}
                             <pre className="text-neutral-400">
                                <span className="text-purple-400">export const</span> <span className="text-white">EliteButton</span> = () =&gt; ({"\n"}
-                               {"  "}&lt;<span className="text-cyan-400">button</span> className=<span className="text-cyan-400">"bg-cyan-400 text-black px-10 py-4 font-black rounded-xl shadow-glow"</span>&gt;{"\n"}
+                               {"  "}&lt;<span className="text-cyan-400">button</span> className=&quot;bg-cyan-400 text-black px-10 py-4 font-black rounded-xl shadow-glow&quot;&gt;{"\n"}
                                {"    "}ELITE_ACTION{"\n"}
                                {"  "}&lt;/<span className="text-cyan-400">button</span>&gt;{"\n"}
                                );
@@ -684,7 +687,7 @@ export default function DocsPage() {
                       </div>
                       <h4 className="text-2xl font-black font-headline text-white uppercase italic mb-4">Glass_Materials</h4>
                       <p className="text-neutral-500 font-body text-sm leading-relaxed text-sm">
-                         Advanced refraction algorithms and blur-backdrop filters provide the "Cyber-Luxury" aesthetic out of the box.
+                         Advanced refraction algorithms and blur-backdrop filters provide the &quot;Cyber-Luxury&quot; aesthetic out of the box.
                       </p>
                    </div>
                 </div>
@@ -734,7 +737,7 @@ export default function DocsPage() {
                             <p className="text-neutral-400 text-xs font-body mb-4">Add the Componeo preset to your <code className="text-cyan-400">tailwind.config.ts</code></p>
                             <div className="flex justify-between items-center bg-white/[0.02] p-4 rounded-xl border border-white/5">
                                <code className="text-neutral-400 font-mono text-[11px]">
-                                  plugins: [require(<span className="text-white">"@componeo/tailwind-preset"</span>)]
+                                  plugins: [require(&quot;@componeo/tailwind-preset&quot;)]
                                </code>
                                <button 
                                  onClick={() => handleCopy('plugins: [require("@componeo/tailwind-preset")]', 'tw-preset')}
@@ -855,7 +858,7 @@ export default function DocsPage() {
                       <div className="glass-premium p-10 rounded-[2.5rem] border border-white/5 space-y-6">
                          <div className="text-neutral-400 font-headline font-black text-xs tracking-widest uppercase italic">03 // Atmosphere</div>
                          <p className="text-neutral-500 text-sm font-body leading-relaxed">
-                            Layering is handled via <code className="text-white">z-index</code> and opacity gradients (0.02 to 0.08) to maintain the "infinite void" feel.
+                            Layering is handled via <code className="text-white">z-index</code> and opacity gradients (0.02 to 0.08) to maintain the &quot;infinite void&quot; feel.
                          </p>
                       </div>
                    </div>
@@ -920,7 +923,7 @@ export default function DocsPage() {
                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                       </div>
                       <p className="text-neutral-500 text-xs font-body uppercase mt-6 tracking-widest leading-loose">
-                         Recommended: whileHover={"{{ scale: 1.05 }}"} transition={"{{ type: 'spring', stiffness: 300 }}"}
+                         Recommended: whileHover=&#123;&quot;&#123;&#123; scale: 1.05 &#125;&#125;&quot;&#125; transition=&#123;&quot;&#123;&#123; type: &apos;spring&apos;, stiffness: 300 &#125;&#125;&quot;&#125;
                       </p>
                    </div>
 

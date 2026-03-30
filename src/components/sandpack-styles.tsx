@@ -16,6 +16,14 @@ export const SandPackCSS = () => {
       <style
         dangerouslySetInnerHTML={{ __html: cssText }}
         id="sandpack"
+    const cssText = getSandpackCssText();
+
+    return (
+      <style
+        id="sandpack"
+        dangerouslySetInnerHTML={{
+          __html: (cssText || "").replace(/<\/(style)/gi, "<\\/$1"),
+        }}
       />
     );
   });
