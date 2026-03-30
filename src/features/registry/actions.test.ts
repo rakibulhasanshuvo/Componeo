@@ -77,6 +77,16 @@ describe('Registry Actions', () => {
       expect(result).toEqual(ELITE_MOCK_COMPONENTS);
       expect(console.error).toHaveBeenCalledWith('SYSTEM: [Database_Error] Fetching components failed:', error);
     });
+
+    it('should return ELITE_MOCK_COMPONENTS when repository throws an error for a specific category', async () => {
+      const testError = new Error('Database connection failed for category');
+      mockGetPublicComponents.mockRejectedValue(testError);
+
+      const result = await getComponents('Buttons');
+
+      expect(result).toEqual(ELITE_MOCK_COMPONENTS);
+      expect(console.error).toHaveBeenCalledWith('SYSTEM: [Database_Error] Fetching components failed:', testError);
+    });
   });
 
   describe('getComponentById', () => {
