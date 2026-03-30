@@ -81,7 +81,7 @@ export default async function HomePage({ searchParams }: PageProps) {
                 className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 items-start"
               >
                 {components.map((item, idx) => (
-                  <ComponentCard key={item.id} component={item} idx={idx} />
+                  <ComponentCard key={item.id} component={item} idx={idx} priority={idx < 3} />
                 ))}
               </div>
             ) : (
