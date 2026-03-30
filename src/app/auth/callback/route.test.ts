@@ -74,8 +74,7 @@ describe('Auth Callback Route', () => {
   })
 
   it('should redirect to origin + next in local environment when exchange succeeds', async () => {
-    const originalNodeEnv = process.env.NODE_ENV
-    process.env.NODE_ENV = 'development'
+    vi.stubEnv('NODE_ENV', 'development')
 
     mockExchangeCodeForSession.mockResolvedValueOnce({ error: null })
     const request = createRequest('http://localhost:3000/auth/callback?code=test-code&next=/custom-dashboard')
@@ -84,12 +83,11 @@ describe('Auth Callback Route', () => {
 
     expect(NextResponse.redirect).toHaveBeenCalledWith('http://localhost:3000/custom-dashboard')
 
-    process.env.NODE_ENV = originalNodeEnv
+    vi.unstubAllEnvs()
   })
 
   it('should redirect to forwardedHost + next in non-local environment when forwarded host exists', async () => {
-    const originalNodeEnv = process.env.NODE_ENV
-    process.env.NODE_ENV = 'production'
+    vi.stubEnv('NODE_ENV', 'production')
 
     mockExchangeCodeForSession.mockResolvedValueOnce({ error: null })
     const request = createRequest('https://original.com/auth/callback?code=test-code&next=/dashboard', {
@@ -100,12 +98,11 @@ describe('Auth Callback Route', () => {
 
     expect(NextResponse.redirect).toHaveBeenCalledWith('https://forwarded.com/dashboard')
 
-    process.env.NODE_ENV = originalNodeEnv
+    vi.unstubAllEnvs()
   })
 
   it('should redirect to origin + next in non-local environment when no forwarded host', async () => {
-    const originalNodeEnv = process.env.NODE_ENV
-    process.env.NODE_ENV = 'production'
+    vi.stubEnv('NODE_ENV', 'production')
 
     mockExchangeCodeForSession.mockResolvedValueOnce({ error: null })
     const request = createRequest('https://production.com/auth/callback?code=test-code&next=/dashboard')
@@ -113,6 +110,20 @@ describe('Auth Callback Route', () => {
     await GET(request)
 
     expect(NextResponse.redirect).toHaveBeenCalledWith('https://production.com/dashboard')
+
+    vi.unstubAllEnvs()
+  })
+
+  it('should use default next value (/dashboard) if not provided in search params', async () => {
+    const originalNodeEnv = process.env.NODE_ENV
+    process.env.NODE_ENV = 'development'
+
+    mockExchangeCodeForSession.mockResolvedValueOnce({ error: null })
+    const request = createRequest('http://localhost:3000/auth/callback?code=test-code')
+
+    await GET(request)
+
+    expect(NextResponse.redirect).toHaveBeenCalledWith('http://localhost:3000/dashboard')
 
     process.env.NODE_ENV = originalNodeEnv
   })
