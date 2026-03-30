@@ -2,9 +2,9 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { ComponentsRepository } from "@/lib/repositories/componentsRepository";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { z } from "zod";
-import { randomUUID } from "crypto";
+import crypto from "crypto";
 
 /**
  * Zod Schema for Atomic Unit Creation
@@ -30,7 +30,7 @@ export async function createComponent(data: z.infer<typeof CreateComponentSchema
   }
 
   const supabase = await createClient();
-  const repository = new ComponentsRepository(supabase);
+  const repository = new ComponentsRepository(supabase as any);
 
   // 2. Identity Verification
   const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -45,7 +45,7 @@ export async function createComponent(data: z.infer<typeof CreateComponentSchema
   if (data.thumbnail && data.thumbnail instanceof File) {
     const file = data.thumbnail;
     const fileExt = file.name.split('.').pop();
-    const fileName = `${randomUUID()}-${Date.now()}.${fileExt}`;
+    const fileName = `${crypto.randomUUID()}-${Date.now()}.${fileExt}`;
     const filePath = `${user.id}/${fileName}`;
 
     const { error: uploadError } = await supabase.storage
@@ -68,13 +68,16 @@ export async function createComponent(data: z.infer<typeof CreateComponentSchema
   try {
     const { thumbnail, ...componentData } = validated.data;
 
-    await repository.createComponent({
+    const insertPayload: ComponentInsert = {
       ...componentData,
       thumbnail_url,
       author_id: user.id,
-    });
+    };
+
+    await repository.createComponent(insertPayload);
 
     // 5. Persistence Sync
+    revalidateTag("components");
     revalidatePath("/");
     revalidatePath("/dashboard");
     

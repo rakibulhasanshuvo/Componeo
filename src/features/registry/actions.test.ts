@@ -67,6 +67,16 @@ describe('Registry Actions', () => {
       expect(result).toEqual(ELITE_MOCK_COMPONENTS);
       expect(console.error).toHaveBeenCalledWith('SYSTEM: [Database_Error] Fetching components failed:', testError);
     });
+
+    it('should return ELITE_MOCK_COMPONENTS when repository throws an error for a specific category', async () => {
+      const testError = new Error('Database connection failed for category');
+      mockGetPublicComponents.mockRejectedValue(testError);
+
+      const result = await getComponents('Buttons');
+
+      expect(result).toEqual(ELITE_MOCK_COMPONENTS);
+      expect(console.error).toHaveBeenCalledWith('SYSTEM: [Database_Error] Fetching components failed:', testError);
+    });
   });
 
   describe('getComponentById', () => {
@@ -107,6 +117,17 @@ describe('Registry Actions', () => {
       const result = await getComponentById(testId);
 
       expect(result).toEqual(ELITE_MOCK_COMPONENTS[0]);
+      expect(console.error).toHaveBeenCalledWith(`SYSTEM: [Database_Error] Fetching component ${testId} failed:`, testError);
+    });
+
+    it('should return null when repository throws an error and component is not in mock data', async () => {
+      const testError = new Error('Database connection failed');
+      mockGetComponentById.mockRejectedValue(testError);
+
+      const testId = 'non-existent-id';
+      const result = await getComponentById(testId);
+
+      expect(result).toBeNull();
       expect(console.error).toHaveBeenCalledWith(`SYSTEM: [Database_Error] Fetching component ${testId} failed:`, testError);
     });
   });

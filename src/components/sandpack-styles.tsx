@@ -8,18 +8,22 @@ import { useServerInsertedHTML } from "next/navigation";
  */
 export const SandPackCSS = () => {
   useServerInsertedHTML(() => {
-    let cssText = getSandpackCssText();
-    if (typeof cssText === "string") {
-      // Prevent XSS via style tag breakout by replacing the sequence `</style`
-      // with a CSS-escaped version `\3C /style` (where \3C is the CSS escape for `<`).
-      // This neutralizes HTML parsing without breaking CSS validity.
-      cssText = cssText.replace(/<\/(style)/gi, "\\3C /$1");
-    }
+    // Sanitize the CSS text to prevent XSS breakout vulnerabilities
+    // Replace `</style` with `</\73 tyle` to prevent parsing of the closing style tag.
+    // `\73 ` is the CSS hex escape for `s`.
+    const cssText = getSandpackCssText().replace(/<\/style/gi, "</\\73 tyle");
+    return (
+      <style
+        dangerouslySetInnerHTML={{ __html: cssText }}
+        id="sandpack"
+    const cssText = getSandpackCssText();
 
     return (
       <style
-        dangerouslySetInnerHTML={{ __html: cssText || "" }}
         id="sandpack"
+        dangerouslySetInnerHTML={{
+          __html: (cssText || "").replace(/<\/(style)/gi, "<\\/$1"),
+        }}
       />
     );
   });

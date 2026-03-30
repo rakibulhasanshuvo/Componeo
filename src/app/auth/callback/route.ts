@@ -25,8 +25,9 @@ export async function GET(request: Request) {
         }
       }
     } catch (err) {
-      // return the user to an error page with instructions
-      return NextResponse.redirect(`${origin}/auth/auth-error`)
+      // Log the error for debugging purposes if needed
+      // console.error('Auth callback error:', err)
+      // Fall through to redirect to the error page
     }
   }
 
