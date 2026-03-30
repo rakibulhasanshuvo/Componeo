@@ -55,6 +55,42 @@ describe('Auth Callback Route', () => {
     expect(NextResponse.redirect).toHaveBeenCalledWith('http://localhost:3000/auth/auth-error')
   })
 
+  it('should redirect to auth-error if createClient throws an exception', async () => {
+    // Override the mock to simulate createClient throwing an error (e.g. missing env vars)
+    ;(createClient as any).mockRejectedValueOnce(new Error('Missing Supabase environment variables'));
+    const request = createRequest('http://localhost:3000/auth/callback?code=test-code');
+
+    await GET(request);
+
+    expect(NextResponse.redirect).toHaveBeenCalledWith('http://localhost:3000/auth/auth-error');
+  })
+
+  it('should redirect to auth-error if exchangeCodeForSession throws an exception', async () => {
+    mockExchangeCodeForSession.mockRejectedValueOnce(new Error('Network error'));
+    const request = createRequest('http://localhost:3000/auth/callback?code=test-code');
+
+    await GET(request);
+
+    expect(mockExchangeCodeForSession).toHaveBeenCalledWith('test-code');
+    expect(NextResponse.redirect).toHaveBeenCalledWith('http://localhost:3000/auth/auth-error');
+  })
+
+  it('should default to /dashboard if next parameter is not provided', async () => {
+    const originalNodeEnv = process.env.NODE_ENV
+    process.env.NODE_ENV = 'development'
+
+    mockExchangeCodeForSession.mockResolvedValueOnce({ error: null })
+    // No `next` parameter in the URL
+    const request = createRequest('http://localhost:3000/auth/callback?code=test-code')
+
+    await GET(request)
+
+    // Should default to /dashboard
+    expect(NextResponse.redirect).toHaveBeenCalledWith('http://localhost:3000/dashboard')
+
+    process.env.NODE_ENV = originalNodeEnv
+  })
+
   it('should redirect to origin + next in local environment when exchange succeeds', async () => {
     const originalNodeEnv = process.env.NODE_ENV
     process.env.NODE_ENV = 'development'
