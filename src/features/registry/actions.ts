@@ -1,5 +1,6 @@
 "use server";
 
+import { cache } from "react";
 import { createClient } from "@/utils/supabase/server";
 import { ComponentsRepository, ComponentRow } from "@/lib/repositories/componentsRepository";
 import { ELITE_MOCK_COMPONENTS } from "./mockData";
@@ -48,4 +49,8 @@ export async function getComponentById(id: string): Promise<ComponentRow | null>
     console.error(`SYSTEM: [Database_Error] Fetching component ${id} failed:`, error);
     return ELITE_MOCK_COMPONENTS.find(m => m.id === id) || null;
   }
+});
+
+export async function getComponentById(id: string): Promise<ComponentRow | null> {
+  return fetchComponent(id);
 }
