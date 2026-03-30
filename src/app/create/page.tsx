@@ -104,7 +104,7 @@ export default function CreateComponentPage() {
       }
       router.push("/");
       router.refresh();
-    } catch (err: any) {
+    } catch (err: unknown) {
       setSaveError("FORGE_OVERHEAT: A critical systemic failure occurred during fusion.");
     } finally {
       setIsSaving(false);
