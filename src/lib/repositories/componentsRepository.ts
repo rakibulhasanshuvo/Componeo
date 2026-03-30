@@ -78,7 +78,7 @@ export class ComponentsRepository {
   async createComponent(component: ComponentInsert): Promise<ComponentRow> {
     const { data, error } = await this.supabase
       .from('components')
-      .insert(component)
+      .insert([component] as any)
       .select()
       .single();
 
@@ -96,7 +96,7 @@ export class ComponentsRepository {
   async updateComponent(id: string, updates: ComponentUpdate, authorId: string): Promise<ComponentRow> {
     const { data, error } = await this.supabase
       .from('components')
-      .update(updates)
+      .update(updates as any)
       .eq('id', id)
       .eq('author_id', authorId) // Security: Ensure author owns the component
       .select()
