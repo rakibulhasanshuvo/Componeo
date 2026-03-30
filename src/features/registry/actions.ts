@@ -9,10 +9,10 @@ import { ELITE_MOCK_COMPONENTS } from "./mockData";
  * Fetch all public components for the registry.
  */
 export async function getComponents(category?: string): Promise<ComponentRow[]> {
-  const supabase = await createClient();
-  const repository = new ComponentsRepository(supabase);
-  
   try {
+    const supabase = await createClient();
+    const repository = new ComponentsRepository(supabase);
+
     const data = await repository.getPublicComponents(category);
     
     // If database is empty, provide the architectural fallback for "Elite" onboarding
@@ -37,6 +37,9 @@ const fetchComponent = cache(async (id: string): Promise<ComponentRow | null> =>
   const repository = new ComponentsRepository(supabase);
   
   try {
+    const supabase = await createClient();
+    const repository = new ComponentsRepository(supabase);
+
     const data = await repository.getComponentById(id);
     
     if (!data) {
