@@ -55,6 +55,24 @@ describe('Auth Callback Route', () => {
     expect(NextResponse.redirect).toHaveBeenCalledWith('http://localhost:3000/auth/auth-error')
   })
 
+  it('should redirect to auth-error if an exception is thrown during auth exchange', async () => {
+    mockExchangeCodeForSession.mockRejectedValueOnce(new Error('Network error'))
+    const request = createRequest('http://localhost:3000/auth/callback?code=test-code')
+
+    await GET(request)
+
+    expect(NextResponse.redirect).toHaveBeenCalledWith('http://localhost:3000/auth/auth-error')
+  })
+
+  it('should redirect to auth-error if createClient throws an exception', async () => {
+    ;(createClient as any).mockRejectedValueOnce(new Error('Missing env variables'))
+    const request = createRequest('http://localhost:3000/auth/callback?code=test-code')
+
+    await GET(request)
+
+    expect(NextResponse.redirect).toHaveBeenCalledWith('http://localhost:3000/auth/auth-error')
+  })
+
   it('should redirect to origin + next in local environment when exchange succeeds', async () => {
     const originalNodeEnv = process.env.NODE_ENV
     process.env.NODE_ENV = 'development'
