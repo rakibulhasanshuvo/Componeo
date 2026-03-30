@@ -68,7 +68,7 @@ describe('Registry Actions', () => {
       expect(console.error).toHaveBeenCalledWith('SYSTEM: [Database_Error] Fetching components failed:', testError);
     });
 
-    it('should implement Missing Error Path Test for getComponents with mock data fallback', async () => {
+    it('should return mock components fallback when fetching components fails', async () => {
       const error = new Error('Simulated ComponentsRepository error');
       mockGetPublicComponents.mockRejectedValue(error);
 
@@ -117,6 +117,17 @@ describe('Registry Actions', () => {
       const result = await getComponentById(testId);
 
       expect(result).toEqual(ELITE_MOCK_COMPONENTS[0]);
+      expect(console.error).toHaveBeenCalledWith(`SYSTEM: [Database_Error] Fetching component ${testId} failed:`, testError);
+    });
+
+    it('should return null when repository throws an error and component is not in mock data', async () => {
+      const testError = new Error('Database connection failed');
+      mockGetComponentById.mockRejectedValue(testError);
+
+      const testId = 'non-existent-id';
+      const result = await getComponentById(testId);
+
+      expect(result).toBeNull();
       expect(console.error).toHaveBeenCalledWith(`SYSTEM: [Database_Error] Fetching component ${testId} failed:`, testError);
     });
   });
