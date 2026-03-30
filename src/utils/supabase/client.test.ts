@@ -14,7 +14,7 @@ describe('createClient', () => {
     process.env = { ...originalEnv }
   })
 
-  it('calls createBrowserClient with provided environment variables', () => {
+  it('asserting that createBrowserClient was called with appropriate environment variables', () => {
     process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://custom-url.supabase.co'
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'custom-key'
 
