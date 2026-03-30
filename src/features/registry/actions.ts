@@ -1,5 +1,6 @@
 "use server";
 
+import { cache } from "react";
 import { createClient } from "@/utils/supabase/server";
 import { createStaticClient } from "@/utils/supabase/static";
 import { ComponentsRepository, ComponentRow } from "@/lib/repositories/componentsRepository";
@@ -43,21 +44,28 @@ export const getComponents = cache(async (category?: string): Promise<ComponentR
 /**
  * Fetch a single component by its Unique ID.
  */
-export async function getComponentById(id: string): Promise<ComponentRow | null> {
+const fetchComponent = cache(async (id: string): Promise<ComponentRow | null> => {
   const supabase = await createClient();
-  const repository = new ComponentsRepository(supabase);
+  const repository = new ComponentsRepository(supabase as any);
   
   try {
+    const supabase = await createClient();
+    const repository = new ComponentsRepository(supabase);
+
     const data = await repository.getComponentById(id);
     
     if (!data) {
       // Check mock data for development units (e.g. initial registry units)
-      return (ELITE_MOCK_COMPONENTS.find(m => m.id === id) as any) || null;
+      return ELITE_MOCK_COMPONENTS.find(m => m.id === id) || null;
     }
 
     return data;
   } catch (error) {
     console.error(`SYSTEM: [Database_Error] Fetching component ${id} failed:`, error);
-    return (ELITE_MOCK_COMPONENTS.find(m => m.id === id) as any) || null;
+    return ELITE_MOCK_COMPONENTS.find(m => m.id === id) || null;
   }
+});
+
+export async function getComponentById(id: string): Promise<ComponentRow | null> {
+  return fetchComponent(id);
 }

@@ -1,4 +1,4 @@
-import { ComponentRow } from "./actions";
+import { ComponentRow } from "@/lib/repositories/componentsRepository";
 
 export const ELITE_MOCK_COMPONENTS: ComponentRow[] = [
   {
@@ -37,6 +37,7 @@ export default function RefractionMatrix() {
   );
 }`,
     author_id: "system",
+    thumbnail_url: null,
     is_public: true
   },
   {
@@ -85,6 +86,7 @@ export default function IntentHUD() {
   );
 }`,
     author_id: "system",
+    thumbnail_url: null,
     is_public: true
   },
   {
@@ -121,6 +123,7 @@ export default function KineticCard() {
   );
 }`,
     author_id: "system",
+    thumbnail_url: null,
     is_public: true
   },
   {
@@ -166,6 +169,7 @@ export default function DiagnosticTerminal() {
   );
 }`,
     author_id: "system",
+    thumbnail_url: null,
     is_public: true
   },
   {
@@ -189,6 +193,7 @@ export default function ElitePulse() {
   );
 }`,
     author_id: "system",
+    thumbnail_url: null,
     is_public: true
   },
   {
@@ -214,6 +219,7 @@ export default function QuantumState() {
   );
 }`,
     author_id: "system",
+    thumbnail_url: null,
     is_public: true
   }
 ];

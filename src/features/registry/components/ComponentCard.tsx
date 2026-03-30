@@ -4,8 +4,12 @@ import React, { useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import { SquareCode as Code, ArrowUpRight, CheckCircle2, Trash2 } from "lucide-react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { ComponentRow } from "@/lib/repositories/componentsRepository";
-import LivePreviewRenderer from "@/components/custom/LivePreviewRenderer";
+
+const LivePreviewRenderer = dynamic(() => import("@/components/custom/LivePreviewRenderer"), {
+  ssr: false,
+});
 
 interface ComponentCardProps {
   component: ComponentRow;
@@ -111,6 +115,7 @@ export default function ComponentCard({
               className="absolute inset-0 w-full h-full"
             >
               {thumbnail_url ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
                 <img 
                    src={thumbnail_url} 
                    alt={title} 
