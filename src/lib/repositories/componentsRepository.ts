@@ -26,14 +26,19 @@ export class ComponentsRepository {
       query = query.eq('category', category);
     }
 
-    const { data, error } = await query;
+    try {
+      const { data, error } = await query;
 
-    if (error) {
-      console.error('DATABASE_ERROR: [ComponentsRepository.getPublicComponents]', error);
-      throw new Error(`Architectural failure in registry fetch: ${error.message}`);
+      if (error) {
+        console.error('DATABASE_ERROR: [ComponentsRepository.getPublicComponents]', error);
+        throw new Error(`Architectural failure in registry fetch: ${error.message}`);
+      }
+
+      return data;
+    } catch (e) {
+      console.error('DATABASE_ERROR: [ComponentsRepository.getPublicComponents]', e);
+      throw new Error(`Architectural failure in registry fetch: ${e}`);
     }
-
-    return data;
   }
 
   /**
