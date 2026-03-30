@@ -4,7 +4,6 @@ import { createClient } from "@/utils/supabase/server";
 import { ComponentsRepository } from "@/lib/repositories/componentsRepository";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { randomUUID } from "crypto";
 
 /**
  * Zod Schema for Atomic Unit Creation
@@ -45,7 +44,7 @@ export async function createComponent(data: z.infer<typeof CreateComponentSchema
   if (data.thumbnail && data.thumbnail instanceof File) {
     const file = data.thumbnail;
     const fileExt = file.name.split('.').pop();
-    const fileName = `${randomUUID()}-${Date.now()}.${fileExt}`;
+    const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
     const filePath = `${user.id}/${fileName}`;
 
     const { error: uploadError } = await supabase.storage

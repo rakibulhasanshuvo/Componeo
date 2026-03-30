@@ -1,6 +1,6 @@
 import React from "react";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
+import DashboardNavbar from "@/features/dashboard/components/DashboardNavbar";
+import DashboardSidebar from "@/features/dashboard/components/DashboardSidebar";
 import FilterBar from "@/features/registry/components/FilterBar";
 import ComponentCard from "@/features/registry/components/ComponentCard";
 import { getComponents } from "@/features/registry/actions";
@@ -23,15 +23,19 @@ export default async function HomePage({ searchParams }: PageProps) {
   const components = await getComponents(category);
 
   return (
-    <div className="asymmetric-gradient min-h-screen flex flex-col selection:bg-cyan-400 selection:text-black">
-      <Navbar />
+    <div className="flex h-screen bg-[#0a0a0b] overflow-hidden selection:bg-cyan-400 selection:text-black">
+      {/* 1. Global Navigation Sidebar */}
+      <DashboardSidebar />
 
-      <main className="flex-1 max-w-7xl mx-auto w-full px-8 pt-40 pb-32 relative">
+      <main className="flex-1 flex flex-col overflow-y-auto custom-scrollbar bg-[#050505] relative pl-64 pt-16">
         {/* Decorative Grid Background */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
 
+        {/* 2. Command Hub Navbar */}
+        <DashboardNavbar />
+
         {/* 3. Registry Interface */}
-        <div className="relative z-10 space-y-12">
+        <div className="relative z-10 p-8 lg:p-12 space-y-12">
           
           {/* Holographic Header Section */}
           <header className="space-y-6">
@@ -112,8 +116,17 @@ export default async function HomePage({ searchParams }: PageProps) {
           </section>
         </div>
 
+        {/* HUD Navigation Footer (Internal Only) */}
+        <div className="fixed bottom-8 right-12 z-[60] hidden md:block pointer-events-none">
+           <div className="flex items-center gap-6 text-[8px] font-headline font-black text-neutral-800 uppercase tracking-[0.5em] bg-black/40 backdrop-blur-md px-6 py-3 rounded-full border border-white/5 shadow-2xl">
+              <span className="flex items-center gap-2"><div className="w-1 h-1 rounded-full bg-cyan-400 animate-pulse" /> Latency: 14ms</span>
+              <div className="w-1 h-1 rounded-full bg-neutral-900" />
+              <span>Mem: 1.2GB</span>
+              <div className="w-1 h-1 rounded-full bg-neutral-900" />
+              <span className="text-emerald-500/50">Auth: SECURE</span>
+           </div>
+        </div>
       </main>
-      <Footer />
     </div>
   );
 }

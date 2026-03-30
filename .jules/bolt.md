@@ -1,3 +1,0 @@
-## 2024-05-19 - Massive Next.js App Router Bundle Size Reduction with Dynamic Imports
-**Learning:** Initial load times in Next.js applications featuring heavy interactive components (like sandboxes or editors, e.g., `@codesandbox/sandpack-react`) can be severely bottlenecked. These libraries often parse immediately, forcing an enormous JS download on the first load of lists/grids.
-**Action:** Always identify heavy sub-components that are not immediately visible or depend on user interaction (like hover states). By using Next.js `next/dynamic` with `ssr: false`, we prevent the heavy library from loading with the main page route. In `ComponentCard`, deferring `LivePreviewRenderer` reduced the first load JS from `376 kB` to `157 kB`—a ~58% improvement!

@@ -44,37 +44,24 @@ export default function DashboardNavbar() {
       <div className="flex items-center gap-4">
         {/* Search Field */}
         <div className="relative flex items-center bg-surface-container-low rounded-full px-4 py-1.5 border border-white/5 transition-all hover:bg-surface-container active:scale-[0.98]">
-          <Search size={14} className="text-on-surface-variant mr-2" aria-hidden="true" />
+          <Search size={14} className="text-on-surface-variant mr-2" />
           <input 
             type="text" 
             placeholder="QUERY SYSTEM..." 
-            aria-label="Search system"
-            className="bg-transparent border-none focus:ring-0 text-[10px] font-label font-bold tracking-widest text-on-surface placeholder:text-outline p-0 w-32 focus:w-48 transition-all focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-sm"
+            className="bg-transparent border-none focus:ring-0 text-[10px] font-label font-bold tracking-widest text-on-surface placeholder:text-outline p-0 w-32 focus:w-48 transition-all"
           />
         </div>
 
         {/* Global Control Buttons */}
         <div className="flex items-center gap-1">
-          <button
-            aria-label="System Settings"
-            title="System Settings"
-            className="p-2 text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all rounded-full active:scale-90 aspect-square flex items-center justify-center focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-black"
-          >
-            <Settings size={18} aria-hidden="true" />
+          <button className="p-2 text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all rounded-full active:scale-90 aspect-square flex items-center justify-center">
+            <Settings size={18} />
           </button>
-          <button
-            aria-label="Help and Documentation"
-            title="Help and Documentation"
-            className="p-2 text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all rounded-full active:scale-90 aspect-square flex items-center justify-center focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-black"
-          >
-            <HelpCircle size={18} aria-hidden="true" />
+          <button className="p-2 text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all rounded-full active:scale-90 aspect-square flex items-center justify-center">
+            <HelpCircle size={18} />
           </button>
-          <button
-            aria-label="User Profile"
-            title="User Profile"
-            className="p-2 text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all rounded-full active:scale-90 aspect-square flex items-center justify-center focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-black"
-          >
-            <UserCircle size={18} aria-hidden="true" />
+          <button className="p-2 text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all rounded-full active:scale-90 aspect-square flex items-center justify-center">
+            <UserCircle size={18} />
           </button>
         </div>
       </div>

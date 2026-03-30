@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -8,9 +9,12 @@ import {
   Layout, 
   Globe, 
   Lock,
+  Loader2,
   AlertCircle,
   Sparkles
 } from "lucide-react";
+import { createComponent } from "@/features/create/actions";
+import { useRouter } from "next/navigation";
 import MonacoEditor from "@/components/editor/MonacoEditor";
 
 // 1. Zod Schema for Component Forge
@@ -23,7 +27,7 @@ const createComponentSchema = z.object({
   thumbnail: z.any().optional(),
 });
 
-export type CreateComponentValues = z.infer<typeof createComponentSchema>;
+type CreateComponentValues = z.infer<typeof createComponentSchema>;
 
 interface CreateFormProps {
   initialCode: string;
@@ -67,9 +71,8 @@ export default function CreateForm({
     onSaveError(null);
     try {
       await onSubmit(data);
-    } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : "Forge Overheat: Critical failure saving component.";
-      onSaveError(errorMessage);
+    } catch (err: any) {
+      onSaveError(err.message || "Forge Overheat: Critical failure saving component.");
     }
   };
 
