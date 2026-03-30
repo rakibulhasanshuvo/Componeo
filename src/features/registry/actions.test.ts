@@ -67,6 +67,16 @@ describe('Registry Actions', () => {
       expect(result).toEqual(ELITE_MOCK_COMPONENTS);
       expect(console.error).toHaveBeenCalledWith('SYSTEM: [Database_Error] Fetching components failed:', testError);
     });
+
+    it('should implement Missing Error Path Test for getComponents with mock data fallback', async () => {
+      const error = new Error('Simulated ComponentsRepository error');
+      mockGetPublicComponents.mockRejectedValue(error);
+
+      const result = await getComponents('TestCategory');
+
+      expect(result).toEqual(ELITE_MOCK_COMPONENTS);
+      expect(console.error).toHaveBeenCalledWith('SYSTEM: [Database_Error] Fetching components failed:', error);
+    });
   });
 
   describe('getComponentById', () => {
