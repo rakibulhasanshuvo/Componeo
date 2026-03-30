@@ -11,11 +11,17 @@ import { cache } from "react";
 /**
  * Fetch all public components for the registry.
  */
-export const getComponents = cache(async (category?: string): Promise<ComponentRow[]> => {
-  return unstable_cache(
-    async () => {
-      const supabase = createStaticClient();
-      const repository = new ComponentsRepository(supabase);
+export async function getComponents(category?: string): Promise<ComponentRow[]> {
+  try {
+    const supabase = await createClient();
+    const repository = new ComponentsRepository(supabase);
+    const data = await repository.getPublicComponents(category);
+    
+    // If database is empty, provide the architectural fallback for "Elite" onboarding
+    if (data.length === 0) {
+      console.warn("SYSTEM: [Database_Empty] Serving architectural fallback set.");
+      return ELITE_MOCK_COMPONENTS as any;
+    }
 
       try {
         const data = await repository.getPublicComponents(category);
@@ -44,14 +50,10 @@ export const getComponents = cache(async (category?: string): Promise<ComponentR
 /**
  * Fetch a single component by its Unique ID.
  */
-const fetchComponent = cache(async (id: string): Promise<ComponentRow | null> => {
-  const supabase = await createClient();
-  const repository = new ComponentsRepository(supabase as any);
-  
+export async function getComponentById(id: string): Promise<ComponentRow | null> {
   try {
     const supabase = await createClient();
     const repository = new ComponentsRepository(supabase);
-
     const data = await repository.getComponentById(id);
     
     if (!data) {
