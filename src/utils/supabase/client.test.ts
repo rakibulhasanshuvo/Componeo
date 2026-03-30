@@ -14,7 +14,7 @@ describe('createClient', () => {
     process.env = { ...originalEnv }
   })
 
-  it('calls createBrowserClient with provided environment variables', () => {
+  it('asserting that createBrowserClient was called with appropriate environment variables', () => {
     process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://custom-url.supabase.co'
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'custom-key'
 
@@ -26,19 +26,12 @@ describe('createClient', () => {
     )
   })
 
-  it('calls createBrowserClient with placeholder variables when environment variables are not set', () => {
+  it('throws an error when environment variables are not set', () => {
     delete process.env.NEXT_PUBLIC_SUPABASE_URL
     delete process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-    // Set them to placeholder values to mimic testing fallback behavior mentioned in memory
-    process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://placeholder-url.supabase.co'
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'placeholder-key'
-
-    createClient()
-
-    expect(createBrowserClient).toHaveBeenCalledWith(
-      'https://placeholder-url.supabase.co',
-      'placeholder-key'
+    expect(() => createClient()).toThrowError(
+      "Missing Supabase environment variables: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY must be defined."
     )
   })
 })

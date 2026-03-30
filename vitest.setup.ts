@@ -1,4 +1,17 @@
 import '@testing-library/jest-dom'
+import { vi } from 'vitest'
 
-process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://placeholder.supabase.co'
-process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'placeholder-key'
+// Mock matchMedia
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: vi.fn().mockImplementation(query => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: vi.fn(), // deprecated
+    removeListener: vi.fn(), // deprecated
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  })),
+})
