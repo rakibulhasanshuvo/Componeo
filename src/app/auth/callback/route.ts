@@ -25,7 +25,8 @@ export async function GET(request: Request) {
         }
       }
     } catch (err) {
-      // Ignore exception and fall through to error page redirect
+      // return the user to an error page with instructions
+      return NextResponse.redirect(`${origin}/auth/auth-error`)
     }
   }
 
