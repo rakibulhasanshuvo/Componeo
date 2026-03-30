@@ -10,7 +10,7 @@ export type ComponentUpdate = Database['public']['Tables']['components']['Update
  * Encapsulates all persistence logic for Atomic Units.
  */
 export class ComponentsRepository {
-  constructor(private readonly supabase: SupabaseClient<Database>) {}
+  constructor(private readonly supabase: SupabaseClient<any>) {}
 
   /**
    * Fetch all public components with optional category filter.
@@ -26,14 +26,19 @@ export class ComponentsRepository {
       query = query.eq('category', category);
     }
 
-    const { data, error } = await query;
+    try {
+      const { data, error } = await query;
 
-    if (error) {
-      console.error('DATABASE_ERROR: [ComponentsRepository.getPublicComponents]', error);
-      throw new Error(`Architectural failure in registry fetch: ${error.message}`);
+      if (error) {
+        console.error('DATABASE_ERROR: [ComponentsRepository.getPublicComponents]', error);
+        throw new Error(`Architectural failure in registry fetch: ${error.message}`);
+      }
+
+      return data;
+    } catch (e) {
+      console.error('DATABASE_ERROR: [ComponentsRepository.getPublicComponents]', e);
+      throw new Error(`Architectural failure in registry fetch: ${e}`);
     }
-
-    return data;
   }
 
   /**
@@ -78,7 +83,7 @@ export class ComponentsRepository {
   async createComponent(component: ComponentInsert): Promise<ComponentRow> {
     const { data, error } = await this.supabase
       .from('components')
-      .insert(component)
+      .insert([component] as any)
       .select()
       .single();
 
@@ -96,7 +101,7 @@ export class ComponentsRepository {
   async updateComponent(id: string, updates: ComponentUpdate, authorId: string): Promise<ComponentRow> {
     const { data, error } = await this.supabase
       .from('components')
-      .update(updates)
+      .update(updates as any)
       .eq('id', id)
       .eq('author_id', authorId) // Security: Ensure author owns the component
       .select()

@@ -1,4 +1,4 @@
-import { createServerClient } from "@supabase/ssr"
+import { createServerClient, type CookieOptions } from "@supabase/ssr"
 import { NextResponse, type NextRequest } from "next/server"
 import { Database } from "@/types/database.types"
 
@@ -24,7 +24,7 @@ export async function middleware(request: NextRequest) {
         getAll() {
           return request.cookies.getAll()
         },
-        setAll(cookiesToSet: { name: string; value: string; options: any }[]) {
+        setAll(cookiesToSet: { name: string; value: string; options: CookieOptions }[]) {
           cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
           supabaseResponse = NextResponse.next({
             request,
@@ -37,17 +37,31 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  const { data: { user } } = await supabase.auth.getUser();
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
 
-  // If user is not logged in and trying to access a protected route
-  const isProtectedRoute = request.nextUrl.pathname.startsWith('/create') || 
-                          request.nextUrl.pathname.startsWith('/dashboard');
+    // If user is not logged in and trying to access a protected route
+    const isProtectedRoute = request.nextUrl.pathname.startsWith('/create') ||
+                            request.nextUrl.pathname.startsWith('/dashboard');
 
-  if (!user && isProtectedRoute) {
-    const url = request.nextUrl.clone();
-    url.pathname = '/login';
-    url.searchParams.set('next', request.nextUrl.pathname);
-    return NextResponse.redirect(url);
+    if (!user && isProtectedRoute) {
+      const url = request.nextUrl.clone();
+      url.pathname = '/login';
+      url.searchParams.set('next', request.nextUrl.pathname);
+      return NextResponse.redirect(url);
+    }
+  } catch (error) {
+    console.error("Middleware Auth Error:", error);
+
+    // Fail closed: if we can't verify the user, and it's a protected route, redirect to login
+    const isProtectedRoute = request.nextUrl.pathname.startsWith('/create') ||
+                            request.nextUrl.pathname.startsWith('/dashboard');
+    if (isProtectedRoute) {
+      const url = request.nextUrl.clone();
+      url.pathname = '/login';
+      url.searchParams.set('next', request.nextUrl.pathname);
+      return NextResponse.redirect(url);
+    }
   }
 
   return supabaseResponse;
