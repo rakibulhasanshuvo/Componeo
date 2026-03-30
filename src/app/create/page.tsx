@@ -20,7 +20,7 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { createComponent } from "@/features/create/actions";
 import { createClient } from "@/utils/supabase/client";
-import { type User } from "@supabase/supabase-js";
+import type { User } from "@supabase/supabase-js";
 import CreateForm, { CreateComponentValues } from "@/features/create/components/CreateForm";
 
 // New Dashboard Components

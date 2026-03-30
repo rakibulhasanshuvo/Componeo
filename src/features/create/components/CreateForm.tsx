@@ -20,7 +20,7 @@ const createComponentSchema = z.object({
   category: z.enum(["Cursors", "Backgrounds", "Layouts", "Buttons", "Micro-Animations"]),
   code: z.string().min(10, "Component code is too short for a valid forge."),
   is_public: z.boolean(),
-  thumbnail: z.custom<File>((val) => val instanceof File, "Must be a file").optional(),
+thumbnail: typeof window !== "undefined" ? z.instanceof(File).optional() : z.any().optional(),
 });
 
 export type CreateComponentValues = z.infer<typeof createComponentSchema>;
