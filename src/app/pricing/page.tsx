@@ -70,7 +70,7 @@ export default function PricingPage() {
     <div className="asymmetric-gradient min-h-screen text-white selection:bg-cyan-400 selection:text-black">
       <Navbar />
 
-      <main className="pt-40 pb-32 px-10">
+      <main className="pt-40 pb-32 px-4 md:px-10 overflow-hidden md:overflow-visible">
         {/* Hero Section */}
         <header className="max-w-4xl mx-auto text-center mb-32">
           <motion.div 
@@ -84,7 +84,7 @@ export default function PricingPage() {
             </span>
           </motion.div>
           
-          <h1 className="font-headline text-5xl sm:text-7xl md:text-8xl font-black tracking-tighter mb-8 leading-tight italic uppercase pb-2">
+          <h1 className="font-headline text-4xl sm:text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-tight italic uppercase pb-2">
             MACHINED <br />
             <span className="chromatic-text">PRECISION</span> PRICING
           </h1>

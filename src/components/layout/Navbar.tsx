@@ -41,7 +41,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className={`fixed left-1/2 -translate-x-1/2 z-[100] flex items-center justify-between w-[95%] max-w-7xl px-8 py-3 bg-[#050505]/60 backdrop-blur-lg border border-white/10 rounded-full shadow-[0_0_50px_rgba(0,0,0,0.8)] transition-all duration-700 ${scrolled ? "top-4 scale-[0.98]" : "top-8 scale-100"}`}>
+      <header className={`fixed left-1/2 -translate-x-1/2 z-[100] flex items-center justify-between w-[95%] max-w-7xl px-4 md:px-8 py-3 bg-[#050505]/60 backdrop-blur-lg border border-white/10 rounded-full shadow-[0_0_50px_rgba(0,0,0,0.8)] transition-all duration-700 ${scrolled ? "top-4 scale-[0.98]" : "top-8 scale-100"}`}>
         
         {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-2 group">
@@ -146,8 +146,8 @@ export default function Navbar() {
                   >
                     <Link
                       href={link.href}
-                      className={`relative inline-block py-2 font-headline font-black text-5xl md:text-7xl tracking-tighter uppercase italic transition-all duration-300 focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none rounded-lg ${
-                        isActive ? "chromatic-text" : "text-neutral-500 hover:text-white"
+                      className={`relative inline-block font-headline font-black text-4xl sm:text-5xl md:text-7xl tracking-tighter uppercase italic transition-all duration-300 ${
+                        isActive ? "chromatic-text" : "text-neutral-700 hover:text-white"
                       }`}
                     >
                       <span className="relative">

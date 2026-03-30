@@ -26,7 +26,7 @@ export default async function HomePage({ searchParams }: PageProps) {
     <div className="asymmetric-gradient min-h-screen flex flex-col selection:bg-cyan-400 selection:text-black">
       <Navbar />
 
-      <main className="flex-1 max-w-7xl mx-auto w-full px-8 pt-40 pb-32 relative">
+      <main className="flex-1 max-w-7xl mx-auto w-full px-4 md:px-8 pt-40 pb-32 relative">
         {/* Decorative Grid Background */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
 
@@ -41,7 +41,7 @@ export default async function HomePage({ searchParams }: PageProps) {
                   <Boxes size={14} />
                   Atomic Unit Registry // v1.2.0
                 </div>
-                <h1 className="text-4xl md:text-6xl font-black font-headline tracking-tighter text-white uppercase italic">
+                <h1 className="text-3xl sm:text-4xl md:text-6xl font-black font-headline tracking-tighter text-white uppercase italic">
                   The <span className="text-cyan-400">Elite</span> Matrix
                 </h1>
               </div>
