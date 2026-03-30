@@ -49,6 +49,7 @@ export class ComponentsRepository {
       .from('components')
       .select('*')
       .eq('id', id)
+      .limit(1)
       .single();
 
     if (error) {
