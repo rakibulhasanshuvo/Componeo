@@ -13,99 +13,92 @@ vi.mock('next/headers', () => ({
 
 describe('createClient (server)', () => {
   const originalEnv = process.env
-  let mockCookieStore: {
-    getAll: ReturnType<typeof vi.fn>
-    set: ReturnType<typeof vi.fn>
-  }
 
   beforeEach(() => {
     vi.resetAllMocks()
     process.env = { ...originalEnv }
+  })
 
-    mockCookieStore = {
-      getAll: vi.fn().mockReturnValue([{ name: 'test-cookie', value: 'test-value' }]),
-      set: vi.fn(),
+  it('throws an error if NEXT_PUBLIC_SUPABASE_URL is missing', async () => {
+    delete process.env.NEXT_PUBLIC_SUPABASE_URL
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'test-key'
+    vi.mocked(cookies).mockResolvedValue({} as any)
+
+    await expect(createClient()).rejects.toThrow(
+      "Missing Supabase environment variables: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY must be defined."
+    )
+  })
+
+  it('throws an error if NEXT_PUBLIC_SUPABASE_ANON_KEY is missing', async () => {
+    process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://test.supabase.co'
+    delete process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    vi.mocked(cookies).mockResolvedValue({} as any)
+
+    await expect(createClient()).rejects.toThrow(
+      "Missing Supabase environment variables: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY must be defined."
+    )
+  })
+
+  it('calls createServerClient with correct parameters and methods', async () => {
+    process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://test.supabase.co'
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'test-key'
+
+    const mockGetAll = vi.fn().mockReturnValue([{ name: 'test', value: '123' }])
+    const mockSet = vi.fn()
+    const mockCookieStore = {
+      getAll: mockGetAll,
+      set: mockSet,
     }
 
     vi.mocked(cookies).mockResolvedValue(mockCookieStore as any)
-  })
-
-  it('throws an error if environment variables are missing', async () => {
-    delete process.env.NEXT_PUBLIC_SUPABASE_URL
-    delete process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-
-    await expect(createClient()).rejects.toThrow(
-      'Missing Supabase environment variables: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY must be defined.'
-    )
-  })
-
-  it('calls createServerClient with correct parameters', async () => {
-    process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://custom-url.supabase.co'
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'custom-key'
 
     await createClient()
 
-    expect(createServerClient).toHaveBeenCalledWith(
-      'https://custom-url.supabase.co',
-      'custom-key',
-      expect.objectContaining({
-        cookies: expect.any(Object),
-      })
-    )
-  })
+    expect(createServerClient).toHaveBeenCalledTimes(1)
+    const [url, key, options] = vi.mocked(createServerClient).mock.calls[0]
 
-  it('configures cookies.getAll correctly', async () => {
-    process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://custom-url.supabase.co'
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'custom-key'
+    expect(url).toBe('https://test.supabase.co')
+    expect(key).toBe('test-key')
 
-    await createClient()
+    // Test cookies.getAll()
+    const allCookies = options.cookies.getAll()
+    expect(mockGetAll).toHaveBeenCalledTimes(1)
+    expect(allCookies).toEqual([{ name: 'test', value: '123' }])
 
-    // Get the third argument (options object) passed to createServerClient
-    const options = vi.mocked(createServerClient).mock.calls[0][2] as any
-    const getAllResult = options.cookies.getAll()
-
-    expect(mockCookieStore.getAll).toHaveBeenCalled()
-    expect(getAllResult).toEqual([{ name: 'test-cookie', value: 'test-value' }])
-  })
-
-  it('configures cookies.setAll correctly for successful sets', async () => {
-    process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://custom-url.supabase.co'
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'custom-key'
-
-    await createClient()
-
-    const options = vi.mocked(createServerClient).mock.calls[0][2] as any
+    // Test cookies.setAll() successfully
     const cookiesToSet = [
-      { name: 'cookie1', value: 'value1', options: { path: '/' } },
-      { name: 'cookie2', value: 'value2', options: { path: '/admin' } },
+      { name: 'session', value: 'xyz', options: { path: '/' } },
+      { name: 'theme', value: 'dark', options: { path: '/', maxAge: 3600 } },
     ]
-
     options.cookies.setAll(cookiesToSet)
 
-    expect(mockCookieStore.set).toHaveBeenCalledTimes(2)
-    expect(mockCookieStore.set).toHaveBeenNthCalledWith(1, 'cookie1', 'value1', { path: '/' })
-    expect(mockCookieStore.set).toHaveBeenNthCalledWith(2, 'cookie2', 'value2', { path: '/admin' })
+    expect(mockSet).toHaveBeenCalledTimes(2)
+    expect(mockSet).toHaveBeenNthCalledWith(1, 'session', 'xyz', { path: '/' })
+    expect(mockSet).toHaveBeenNthCalledWith(2, 'theme', 'dark', { path: '/', maxAge: 3600 })
   })
 
-  it('handles errors gracefully in cookies.setAll (Server Component scenario)', async () => {
-    process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://custom-url.supabase.co'
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'custom-key'
+  it('ignores errors in setAll when cookieStore.set throws (e.g. in Server Components)', async () => {
+    process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://test.supabase.co'
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'test-key'
 
-    // Mock cookieStore.set to throw an error, simulating a Server Component attempt to set a cookie
-    mockCookieStore.set.mockImplementation(() => {
-      throw new Error('Cannot set cookies in Server Components')
+    const mockSet = vi.fn().mockImplementation(() => {
+      throw new Error("Cookies can only be modified in a Server Action or Route Handler.")
     })
+    const mockCookieStore = {
+      getAll: vi.fn(),
+      set: mockSet,
+    }
+
+    vi.mocked(cookies).mockResolvedValue(mockCookieStore as any)
 
     await createClient()
 
-    const options = vi.mocked(createServerClient).mock.calls[0][2] as any
-    const cookiesToSet = [{ name: 'cookie1', value: 'value1', options: { path: '/' } }]
+    const options = vi.mocked(createServerClient).mock.calls[0][2]
 
-    // Should not throw
-    expect(() => {
-      options.cookies.setAll(cookiesToSet)
-    }).not.toThrow()
+    const cookiesToSet = [{ name: 'test', value: '123', options: {} }]
 
-    expect(mockCookieStore.set).toHaveBeenCalledTimes(1)
+    // This should not throw an error because of the try/catch in setAll
+    expect(() => options.cookies.setAll(cookiesToSet)).not.toThrow()
+    expect(mockSet).toHaveBeenCalledTimes(1)
   })
 })

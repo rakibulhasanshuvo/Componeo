@@ -26,11 +26,20 @@ describe('createClient', () => {
     )
   })
 
-  it('throws an error when environment variables are not set', () => {
+  it('throws an error if NEXT_PUBLIC_SUPABASE_URL is missing', () => {
     delete process.env.NEXT_PUBLIC_SUPABASE_URL
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'custom-key'
+
+    expect(() => createClient()).toThrow(
+      "Missing Supabase environment variables: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY must be defined."
+    )
+  })
+
+  it('throws an error if NEXT_PUBLIC_SUPABASE_ANON_KEY is missing', () => {
+    process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://custom-url.supabase.co'
     delete process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-    expect(() => createClient()).toThrowError(
+    expect(() => createClient()).toThrow(
       "Missing Supabase environment variables: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY must be defined."
     )
   })
