@@ -31,8 +31,7 @@ export default function RootLayout({
         <SandPackCSS />
       </head>
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} font-body antialiased bg-[#050505] text-white overflow-x-hidden`}
-        suppressHydrationWarning
+        className={`${inter.variable} ${spaceGrotesk.variable} font-body antialiased bg-[#050505] text-white`}
       >
         {/* Elite Refraction Matrix */}
         <svg style={{ position: 'absolute', width: 0, height: 0 }} aria-hidden="true" focusable="false">

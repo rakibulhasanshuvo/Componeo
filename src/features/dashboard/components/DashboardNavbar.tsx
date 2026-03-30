@@ -11,7 +11,7 @@ import Link from "next/link";
 
 export default function DashboardNavbar() {
   return (
-    <header className="w-full top-0 left-0 z-[100] bg-black/80 backdrop-blur-xl border-b border-white/5 flex justify-between items-center px-8 py-4 h-16 fixed">
+    <header className="w-full top-0 left-0 z-[90] bg-black/80 backdrop-blur-xl border-b border-white/5 flex justify-between items-center px-8 py-4 h-16 fixed">
       <div className="flex items-center gap-8 translate-y-0.5">
         <Link 
           href="/" 

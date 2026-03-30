@@ -12,20 +12,20 @@ const fetchComponents = cache(async (category?: string) => {
     async () => {
       try {
         const supabase = createStaticClient();
-        const repository = new ComponentsRepository(supabase as any);
+        const repository = new ComponentsRepository(supabase);
         const data = await repository.getPublicComponents(category);
 
         // If database is empty, provide the architectural fallback for "Elite" onboarding
         if (data.length === 0) {
           console.warn("SYSTEM: [Database_Empty] Serving architectural fallback set.");
-          return ELITE_MOCK_COMPONENTS as any;
+          return ELITE_MOCK_COMPONENTS as unknown as ComponentRow[];
         }
 
         return data;
       } catch (error) {
         console.error("SYSTEM: [Database_Error] Fetching components failed:", error);
         // Emergency UI pivot to mock data to prevent total system blackout
-        return ELITE_MOCK_COMPONENTS as any;
+        return ELITE_MOCK_COMPONENTS as unknown as ComponentRow[];
       }
     },
     [`components-registry-${category || 'all'}`],
@@ -49,17 +49,17 @@ export async function getComponents(category?: string): Promise<ComponentRow[]> 
 export async function getComponentById(id: string): Promise<ComponentRow | null> {
   try {
     const supabase = await createClient();
-    const repository = new ComponentsRepository(supabase as any);
+    const repository = new ComponentsRepository(supabase);
     const data = await repository.getComponentById(id);
     
     if (!data) {
       // Check mock data for development units (e.g. initial registry units)
-      return ELITE_MOCK_COMPONENTS.find(m => m.id === id) || null;
+      return (ELITE_MOCK_COMPONENTS.find(m => m.id === id) as unknown as ComponentRow) || null;
     }
 
     return data;
   } catch (error) {
     console.error(`SYSTEM: [Database_Error] Fetching component ${id} failed:`, error);
-    return ELITE_MOCK_COMPONENTS.find(m => m.id === id) || null;
+    return (ELITE_MOCK_COMPONENTS.find(m => m.id === id) as unknown as ComponentRow) || null;
   }
 }
