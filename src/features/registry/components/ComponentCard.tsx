@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import { SquareCode as Code, ArrowUpRight, CheckCircle2, Trash2 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import dynamic from "next/dynamic";
 import { ComponentRow } from "@/lib/repositories/componentsRepository";
 
@@ -16,6 +17,7 @@ interface ComponentCardProps {
   idx: number;
   isDashboard?: boolean;
   onDelete?: (id: string) => void;
+  priority?: boolean;
 }
 
 export default function ComponentCard({
@@ -23,6 +25,7 @@ export default function ComponentCard({
   idx,
   isDashboard = false,
   onDelete,
+  priority = false,
 }: ComponentCardProps) {
   const { id, title, description, category, code, thumbnail_url } = component;
   const [isCopied, setIsCopied] = useState(false);
@@ -115,11 +118,13 @@ export default function ComponentCard({
               className="absolute inset-0 w-full h-full"
             >
               {thumbnail_url ? (
-                /* eslint-disable-next-line @next/next/no-img-element */
-                <img 
+                <Image
                    src={thumbnail_url} 
                    alt={title} 
-                   className="w-full h-full object-cover grayscale-[0.2] group-hover/stage:scale-110 transition-transform duration-[2s] ease-out"
+                   fill
+                   sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                   priority={priority}
+                   className="object-cover grayscale-[0.2] group-hover/stage:scale-110 transition-transform duration-[2s] ease-out"
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-[#050505] relative overflow-hidden">
