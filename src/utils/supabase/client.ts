@@ -14,7 +14,7 @@ export function createClient() {
   }
 
   return createBrowserClient<Database>(
-    supabaseUrl,
-    supabaseKey
+    supabaseUrl || "https://placeholder-url.supabase.co",
+    supabaseKey || "placeholder-key"
   )
 }

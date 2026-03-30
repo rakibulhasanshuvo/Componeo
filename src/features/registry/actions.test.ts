@@ -39,6 +39,16 @@ describe('Registry Actions', () => {
       expect(result).toEqual(mockData);
     });
 
+    it('should return components filtered by category', async () => {
+      const mockComponents = [{ id: '1', name: 'Test Component', category: 'Buttons' }];
+      mockGetPublicComponents.mockResolvedValue(mockComponents);
+
+      const result = await getComponents('Buttons');
+
+      expect(result).toEqual(mockComponents);
+      expect(mockGetPublicComponents).toHaveBeenCalledWith('Buttons');
+    });
+
     it('returns ELITE_MOCK_COMPONENTS and logs warning when database is empty', async () => {
       mockGetPublicComponents.mockResolvedValue([]);
 

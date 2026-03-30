@@ -55,6 +55,39 @@ describe('Auth Callback Route', () => {
     expect(NextResponse.redirect).toHaveBeenCalledWith('http://localhost:3000/auth/auth-error')
   })
 
+  it('should redirect to auth-error if createClient throws an exception', async () => {
+    // Override the mock to simulate createClient throwing an error (e.g. missing env vars)
+    ;(createClient as any).mockRejectedValueOnce(new Error('Missing Supabase environment variables'));
+    const request = createRequest('http://localhost:3000/auth/callback?code=test-code');
+
+    await GET(request);
+
+    expect(NextResponse.redirect).toHaveBeenCalledWith('http://localhost:3000/auth/auth-error');
+  })
+
+  it('should redirect to auth-error if exchangeCodeForSession throws an exception', async () => {
+    mockExchangeCodeForSession.mockRejectedValueOnce(new Error('Network error'));
+    const request = createRequest('http://localhost:3000/auth/callback?code=test-code');
+
+    await GET(request);
+
+    expect(mockExchangeCodeForSession).toHaveBeenCalledWith('test-code');
+    expect(NextResponse.redirect).toHaveBeenCalledWith('http://localhost:3000/auth/auth-error');
+  })
+
+  it('should default to /dashboard if next parameter is not provided', async () => {
+    vi.stubEnv('NODE_ENV', 'development')
+
+    mockExchangeCodeForSession.mockResolvedValueOnce({ error: null })
+    // No `next` parameter in the URL
+    const request = createRequest('http://localhost:3000/auth/callback?code=test-code')
+
+    await GET(request)
+
+    // Should default to /dashboard
+    expect(NextResponse.redirect).toHaveBeenCalledWith('http://localhost:3000/dashboard')
+  })
+
   it('should redirect to origin + next in local environment when exchange succeeds', async () => {
     vi.stubEnv('NODE_ENV', 'development')
 
@@ -88,5 +121,26 @@ describe('Auth Callback Route', () => {
     await GET(request)
 
     expect(NextResponse.redirect).toHaveBeenCalledWith('https://production.com/dashboard')
+  })
+
+  it('should use default next value (/dashboard) if not provided in search params', async () => {
+    vi.stubEnv('NODE_ENV', 'development')
+
+    mockExchangeCodeForSession.mockResolvedValueOnce({ error: null })
+    const request = createRequest('http://localhost:3000/auth/callback?code=test-code')
+
+    await GET(request)
+
+    expect(NextResponse.redirect).toHaveBeenCalledWith('http://localhost:3000/dashboard')
+  })
+
+  it('should redirect to auth-error if an exception is thrown during exchange', async () => {
+    // Simulate an exception thrown during createClient
+    ;(createClient as any).mockRejectedValueOnce(new Error('Unexpected server error'))
+    const request = createRequest('http://localhost:3000/auth/callback?code=test-code')
+
+    await GET(request)
+
+    expect(NextResponse.redirect).toHaveBeenCalledWith('http://localhost:3000/auth/auth-error')
   })
 })
