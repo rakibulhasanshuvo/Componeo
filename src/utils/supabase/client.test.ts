@@ -32,7 +32,7 @@ describe('createClient', () => {
     delete process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
     expect(() => createClient()).toThrowError(
-      'Missing Supabase environment variables: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY must be defined.'
+      "Missing Supabase environment variables: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY must be defined."
     )
   })
 })

@@ -74,6 +74,7 @@ export async function createComponent(data: z.infer<typeof CreateComponentSchema
       author_id: user.id,
     };
 
+    // Type constraints enforced at repository level
     await repository.createComponent(insertPayload);
 
     // 5. Persistence Sync

@@ -115,8 +115,7 @@ describe('Auth Callback Route', () => {
   })
 
   it('should use default next value (/dashboard) if not provided in search params', async () => {
-    const originalNodeEnv = process.env.NODE_ENV
-    process.env.NODE_ENV = 'development'
+    vi.stubEnv('NODE_ENV', 'development')
 
     mockExchangeCodeForSession.mockResolvedValueOnce({ error: null })
     const request = createRequest('http://localhost:3000/auth/callback?code=test-code')
@@ -125,7 +124,17 @@ describe('Auth Callback Route', () => {
 
     expect(NextResponse.redirect).toHaveBeenCalledWith('http://localhost:3000/dashboard')
 
-    process.env.NODE_ENV = originalNodeEnv
+    vi.unstubAllEnvs()
+  })
+
+  it('should redirect to auth-error if an exception is thrown during exchange', async () => {
+    // Simulate an exception thrown during createClient
+    ;(createClient as any).mockRejectedValueOnce(new Error('Unexpected server error'))
+    const request = createRequest('http://localhost:3000/auth/callback?code=test-code')
+
+    await GET(request)
+
+    expect(NextResponse.redirect).toHaveBeenCalledWith('http://localhost:3000/auth/auth-error')
   })
 
   it('should use default next value (/dashboard) if not provided in search params', async () => {
