@@ -47,5 +47,8 @@
     "tailwindcss": "^3.4.16",
     "typescript": "^5.7.2",
     "vitest": "^4.1.2"
+  },
+  "overrides": {
+    "dompurify": "^3.3.3"
   }
 }
