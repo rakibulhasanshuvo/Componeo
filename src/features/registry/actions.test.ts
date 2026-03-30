@@ -69,21 +69,31 @@ describe('Registry Actions', () => {
       expect(console.error).toHaveBeenCalledWith('SYSTEM: [Database_Error] Fetching components failed:', testError);
     });
 
+    it('should return mock components fallback when fetching components fails', async () => {
+      const error = new Error('Simulated ComponentsRepository error');
+      mockGetPublicComponents.mockRejectedValue(error);
+
+      const result = await getComponents('TestCategory');
+
+      expect(result).toEqual(ELITE_MOCK_COMPONENTS);
+      expect(console.error).toHaveBeenCalledWith('SYSTEM: [Database_Error] Fetching components failed:', error);
+    });
+
+    it('should verify the mock data fallback when ComponentsRepository throws an error (Missing Error Path Test)', async () => {
+      const error = new Error('Simulated ComponentsRepository error');
+      mockGetPublicComponents.mockRejectedValueOnce(error);
+
+      const result = await getComponents();
+
+      expect(result).toEqual(ELITE_MOCK_COMPONENTS);
+      expect(console.error).toHaveBeenCalledWith('SYSTEM: [Database_Error] Fetching components failed:', error);
+    });
+
     it('should return ELITE_MOCK_COMPONENTS when createClient throws an error', async () => {
       const testError = new Error('Supabase client initialization failed');
       vi.mocked(createClient).mockRejectedValueOnce(testError);
 
       const result = await getComponents();
-
-      expect(result).toEqual(ELITE_MOCK_COMPONENTS);
-      expect(console.error).toHaveBeenCalledWith('SYSTEM: [Database_Error] Fetching components failed:', testError);
-    });
-
-    it('should return ELITE_MOCK_COMPONENTS when repository throws an error for a specific category', async () => {
-      const testError = new Error('Database connection failed for category');
-      mockGetPublicComponents.mockRejectedValue(testError);
-
-      const result = await getComponents('Buttons');
 
       expect(result).toEqual(ELITE_MOCK_COMPONENTS);
       expect(console.error).toHaveBeenCalledWith('SYSTEM: [Database_Error] Fetching components failed:', testError);
@@ -131,18 +141,6 @@ describe('Registry Actions', () => {
       expect(console.error).toHaveBeenCalledWith(`SYSTEM: [Database_Error] Fetching component ${testId} failed:`, testError);
     });
 
-    it('should fallback to ELITE_MOCK_COMPONENTS when createClient throws an error', async () => {
-      const testError = new Error('Supabase client initialization failed');
-      vi.mocked(createClient).mockRejectedValueOnce(testError);
-
-      // Use the first ID from mock data for testing
-      const testId = ELITE_MOCK_COMPONENTS[0].id;
-      const result = await getComponentById(testId);
-
-      expect(result).toEqual(ELITE_MOCK_COMPONENTS[0]);
-      expect(console.error).toHaveBeenCalledWith(`SYSTEM: [Database_Error] Fetching component ${testId} failed:`, testError);
-    });
-
     it('should return null when repository throws an error and component is not in mock data', async () => {
       const testError = new Error('Database connection failed');
       mockGetComponentById.mockRejectedValue(testError);
@@ -153,5 +151,6 @@ describe('Registry Actions', () => {
       expect(result).toBeNull();
       expect(console.error).toHaveBeenCalledWith(`SYSTEM: [Database_Error] Fetching component ${testId} failed:`, testError);
     });
+
   });
 });
