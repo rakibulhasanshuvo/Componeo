@@ -35,9 +35,9 @@ export async function getComponents(category?: string): Promise<ComponentRow[]> 
 /**
  * Fetch a single component by its Unique ID.
  */
-export async function getComponentById(id: string): Promise<ComponentRow | null> {
+const fetchComponent = cache(async (id: string): Promise<ComponentRow | null> => {
   const supabase = await createClient();
-  const repository = new ComponentsRepository(supabase as any);
+  const repository = new ComponentsRepository(supabase);
   
   try {
     const supabase = await createClient();
