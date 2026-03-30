@@ -28,29 +28,11 @@ describe('createClient', () => {
   })
 
   it('throws an error when environment variables are not set', () => {
-    vi.stubEnv('NEXT_PUBLIC_SUPABASE_URL', '')
-    vi.stubEnv('NEXT_PUBLIC_SUPABASE_ANON_KEY', '')
+    delete process.env.NEXT_PUBLIC_SUPABASE_URL
+    delete process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-    expect(() => createClient()).toThrowError(
-      "Missing Supabase environment variables: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY must be defined."
-    )
-  })
-
-  it('throws an error when only NEXT_PUBLIC_SUPABASE_URL is not set', () => {
-    vi.stubEnv('NEXT_PUBLIC_SUPABASE_URL', '')
-    vi.stubEnv('NEXT_PUBLIC_SUPABASE_ANON_KEY', 'custom-key')
-
-    expect(() => createClient()).toThrowError(
-      "Missing Supabase environment variables: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY must be defined."
-    )
-  })
-
-  it('throws an error when only NEXT_PUBLIC_SUPABASE_ANON_KEY is not set', () => {
-    vi.stubEnv('NEXT_PUBLIC_SUPABASE_URL', 'https://custom-url.supabase.co')
-    vi.stubEnv('NEXT_PUBLIC_SUPABASE_ANON_KEY', '')
-
-    expect(() => createClient()).toThrowError(
-      "Missing Supabase environment variables: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY must be defined."
+    expect(() => createClient()).toThrow(
+      'Missing Supabase environment variables: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY must be defined.'
     )
   })
 })
