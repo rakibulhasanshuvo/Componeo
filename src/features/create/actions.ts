@@ -31,7 +31,7 @@ export async function createComponent(data: z.infer<typeof CreateComponentSchema
   }
 
   const supabase = await createClient();
-  const repository = new ComponentsRepository(supabase as any);
+  const repository = new ComponentsRepository(supabase);
 
   // 2. Identity Verification
   const { data: { user }, error: authError } = await supabase.auth.getUser();

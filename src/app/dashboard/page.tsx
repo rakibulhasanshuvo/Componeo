@@ -29,16 +29,16 @@ export default async function DashboardPage() {
   const components = (data as ComponentRow[]) || [];
 
   return (
-    <div className="bg-background text-on-surface font-body selection:bg-primary/30 selection:text-primary overflow-hidden h-screen flex flex-col">
+    <div className="bg-background text-on-surface font-body selection:bg-primary/30 selection:text-primary min-h-screen flex flex-col">
       {/* Top Console Bar */}
       <DashboardNavbar />
 
-      <div className="flex flex-1 pt-16 h-full overflow-hidden">
+      <div className="flex flex-1 pt-16 min-h-screen">
         {/* Fixed Navigation Sidebar */}
         <DashboardSidebar />
 
         {/* Main Command Center area */}
-        <main className="flex-1 lg:ml-64 overflow-y-auto bg-surface p-8 scroll-smooth scrollbar-hide">
+        <main className="flex-1 lg:ml-64 bg-surface p-8 scroll-smooth scrollbar-hide">
           <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
             
             {/* Console Header */}

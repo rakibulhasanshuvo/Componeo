@@ -10,7 +10,7 @@ export type ComponentUpdate = Database['public']['Tables']['components']['Update
  * Encapsulates all persistence logic for Atomic Units.
  */
 export class ComponentsRepository {
-  constructor(private readonly supabase: SupabaseClient<any>) {}
+  constructor(private readonly supabase: SupabaseClient<any, any, any>) {}
 
   /**
    * Fetch all public components with optional category filter.
@@ -84,7 +84,7 @@ export class ComponentsRepository {
   async createComponent(component: ComponentInsert): Promise<ComponentRow> {
     const { data, error } = await this.supabase
       .from('components')
-      .insert([component] as any)
+      .insert(component)
       .select()
       .single();
 
@@ -102,7 +102,7 @@ export class ComponentsRepository {
   async updateComponent(id: string, updates: ComponentUpdate, authorId: string): Promise<ComponentRow> {
     const { data, error } = await this.supabase
       .from('components')
-      .update(updates as any)
+      .update(updates)
       .eq('id', id)
       .eq('author_id', authorId) // Security: Ensure author owns the component
       .select()
