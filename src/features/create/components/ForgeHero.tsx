@@ -10,6 +10,7 @@ export default function ForgeHero({ onStartBuilding }: { onStartBuilding: () => 
     <section className="relative rounded-[2rem] overflow-hidden mb-12 bg-[#131313] min-h-[450px] flex items-center ghost-border shadow-2xl group">
       {/* Background with Gradient Overlay */}
       <div className="absolute inset-0 z-0 opacity-40">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img 
           className="w-full h-full object-cover grayscale brightness-50 group-hover:scale-105 transition-transform duration-[3s]" 
           alt="Abstract 3D architectural lines"

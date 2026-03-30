@@ -1,13 +1,10 @@
-import { ComponentRow } from "@/lib/repositories/componentsRepository";
-
-export const ELITE_MOCK_COMPONENTS: ComponentRow[] = [
+export const ELITE_MOCK_COMPONENTS = [
   {
     id: "mock-1",
     created_at: new Date().toISOString(),
     title: "Refraction Matrix",
     description: "High-fidelity SVG displacement material for advanced glass-morphism. Features fractal noise distortion and scroll-synced chromatic shift.",
     category: "Refractive Backgrounds",
-    thumbnail_url: null,
     code: `"use client";
 
 import React from "react";
@@ -46,7 +43,6 @@ export default function RefractionMatrix() {
     title: "Intent HUD",
     description: "Adaptive command interface that morphs based on user goal. Implements Purpose-Adaptive design patterns for zero-latency workflows.",
     category: "HUD Navs",
-    thumbnail_url: null,
     code: `"use client";
 
 import React, { useState } from "react";
@@ -95,7 +91,6 @@ export default function IntentHUD() {
     title: "Kinetic Card",
     description: "Premium UI unit with 3D tilt physics and haptic chromatic feedback on interaction. Optimized for high-fidelity component showcases.",
     category: "Atomic Cards",
-    thumbnail_url: null,
     code: `"use client";
 
 import React from "react";
@@ -132,7 +127,6 @@ export default function KineticCard() {
     title: "Diagnostic Terminal",
     description: "Functional terminal UI for telemetry streams. Features monospaced typography and real-time activity markers.",
     category: "Logic Fragments",
-    thumbnail_url: null,
     code: `"use client";
 
 import React from "react";
@@ -178,7 +172,6 @@ export default function DiagnosticTerminal() {
     title: "Elite Pulse",
     description: "Multi-layered button unit with refractive border and internal glow. Optimized for high-priority CTA interactions.",
     category: "Fused Buttons",
-    thumbnail_url: null,
     code: `"use client";
 
 import React from "react";
@@ -202,7 +195,6 @@ export default function ElitePulse() {
     title: "Quantum State",
     description: "Experimental unit showcasing probabilistic UI rendering. Morphs its visual identity based on user interaction frequency.",
     category: "Experimental",
-    thumbnail_url: null,
     code: `"use client";
 
 import React from "react";
