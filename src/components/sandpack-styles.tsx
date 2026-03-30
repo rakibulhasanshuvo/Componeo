@@ -17,10 +17,9 @@ export const SandPackCSS = () => {
     }
 
     return (
-      <style
-        dangerouslySetInnerHTML={{ __html: cssText || "" }}
-        id="sandpack"
-      />
+      <style id="sandpack">
+        {cssText || ""}
+      </style>
     );
   });
   return null;
