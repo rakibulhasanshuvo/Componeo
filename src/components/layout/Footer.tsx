@@ -6,13 +6,13 @@ import { Github } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="w-full py-16 px-8 bg-black border-t border-white/5 flex flex-col items-center gap-12 relative overflow-hidden">
+    <footer className="w-full py-16 px-4 md:px-8 bg-black border-t border-white/5 flex flex-col items-center gap-12 relative overflow-hidden">
       {/* Background Refraction */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-1/2 bg-cyan-400/5 blur-[120px] pointer-events-none" />
       
       <div className="flex flex-col items-center gap-4 relative z-10">
         <div className="text-3xl font-black text-white font-headline tracking-tighter italic chromatic-text">COMPONEO</div>
-        <p className="font-headline text-[9px] tracking-[0.4em] uppercase text-neutral-600 font-black">
+        <p className="font-headline text-[9px] tracking-[0.4em] uppercase text-neutral-600 font-black text-center">
           © 2026 COMPONEO. MACHINED IN THE VOID.
         </p>
       </div>
