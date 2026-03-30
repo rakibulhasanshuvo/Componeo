@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { getComponents, getComponentById } from './actions';
 import { ELITE_MOCK_COMPONENTS } from './mockData';
+import { createClient } from '@/utils/supabase/server';
 
 const mockGetPublicComponents = vi.fn();
 const mockGetComponentById = vi.fn();
@@ -68,11 +69,31 @@ describe('Registry Actions', () => {
       expect(console.error).toHaveBeenCalledWith('SYSTEM: [Database_Error] Fetching components failed:', testError);
     });
 
-    it('should return ELITE_MOCK_COMPONENTS when repository throws an error for a specific category', async () => {
-      const testError = new Error('Database connection failed for category');
-      mockGetPublicComponents.mockRejectedValue(testError);
+    it('should return mock components fallback when fetching components fails', async () => {
+      const error = new Error('Simulated ComponentsRepository error');
+      mockGetPublicComponents.mockRejectedValue(error);
 
-      const result = await getComponents('Buttons');
+      const result = await getComponents('TestCategory');
+
+      expect(result).toEqual(ELITE_MOCK_COMPONENTS);
+      expect(console.error).toHaveBeenCalledWith('SYSTEM: [Database_Error] Fetching components failed:', error);
+    });
+
+    it('should verify the mock data fallback when ComponentsRepository throws an error (Missing Error Path Test)', async () => {
+      const error = new Error('Simulated ComponentsRepository error');
+      mockGetPublicComponents.mockRejectedValueOnce(error);
+
+      const result = await getComponents();
+
+      expect(result).toEqual(ELITE_MOCK_COMPONENTS);
+      expect(console.error).toHaveBeenCalledWith('SYSTEM: [Database_Error] Fetching components failed:', error);
+    });
+
+    it('should return ELITE_MOCK_COMPONENTS when createClient throws an error', async () => {
+      const testError = new Error('Supabase client initialization failed');
+      vi.mocked(createClient).mockRejectedValueOnce(testError);
+
+      const result = await getComponents();
 
       expect(result).toEqual(ELITE_MOCK_COMPONENTS);
       expect(console.error).toHaveBeenCalledWith('SYSTEM: [Database_Error] Fetching components failed:', testError);
@@ -130,5 +151,6 @@ describe('Registry Actions', () => {
       expect(result).toBeNull();
       expect(console.error).toHaveBeenCalledWith(`SYSTEM: [Database_Error] Fetching component ${testId} failed:`, testError);
     });
+
   });
 });
