@@ -77,7 +77,7 @@ export default async function HomePage({ searchParams }: PageProps) {
           <section className="pb-40">
             {components.length > 0 ? (
               <div 
-                role="grid" 
+                role="list"
                 className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 items-start"
               >
                 {components.map((item, idx) => (

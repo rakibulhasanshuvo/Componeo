@@ -78,7 +78,7 @@ export default function ComponentCard({
 
   return (
     <motion.article
-      role="gridcell"
+      role="listitem"
       aria-labelledby={`title-${id}`}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
