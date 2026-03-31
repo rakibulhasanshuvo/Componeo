@@ -109,14 +109,14 @@ export default function LoginPage() {
                   <span className="text-[7px] font-mono text-cyan-400/40">UDP://AUTH.01</span>
                 </div>
                 <div className="relative group holographic-focus">
-                  <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-neutral-600 group-focus-within:text-cyan-400 transition-colors z-10" size={16} />
+                  <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-cyan-400 transition-colors z-10" size={16} />
                   <input
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="architect@componeo.io"
-                    className="w-full bg-black/40 border border-white/5 rounded-2xl py-6 pl-16 pr-6 text-white text-[13px] focus:outline-none focus:border-cyan-400/30 focus:ring-1 focus:ring-cyan-400/5 transition-all font-mono tracking-tight placeholder:text-neutral-800 backdrop-blur-sm"
+                    className="w-full bg-black/40 border border-white/5 rounded-2xl py-6 pl-16 pr-6 text-gray-100 text-[13px] focus:outline-none focus:border-cyan-400/30 focus:ring-1 focus:ring-cyan-400/5 transition-all font-mono tracking-tight placeholder:text-gray-500 backdrop-blur-sm"
                   />
                   <div className="absolute right-6 top-1/2 -translate-y-1/2 opacity-0 group-focus-within:opacity-100 transition-opacity">
                     <div className="flex gap-1">
