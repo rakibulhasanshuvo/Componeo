@@ -16,7 +16,13 @@ const CreateComponentSchema = z.object({
   category: z.string().min(1, "Category is required"),
   code: z.string().min(5, "Atomic code structure too simple"),
   is_public: z.boolean().default(true),
-  thumbnail: typeof window !== 'undefined' ? z.instanceof(File).optional() : z.any().optional(),
+  thumbnail: z.custom<File>((val) => {
+    if (typeof window !== 'undefined') {
+      return val instanceof File;
+    }
+    // SSR fallback: Check for essential File-like properties
+    return val && typeof val === 'object' && 'name' in val && 'size' in val && 'type' in val;
+  }, "Invalid file format").optional(),
 });
 
 export async function createComponent(data: z.infer<typeof CreateComponentSchema>) {
