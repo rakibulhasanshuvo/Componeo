@@ -1,4 +1,4 @@
-import { ComponentRow } from "@/lib/repositories/componentsRepository";
+import type { ComponentRow } from "@/lib/repositories/componentsRepository";
 
 export const ELITE_MOCK_COMPONENTS: ComponentRow[] = [
   {
