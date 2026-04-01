@@ -50,10 +50,10 @@ export default function LoginPage() {
               <div className="p-1.5 bg-cyan-400/10 rounded-lg text-cyan-400 shadow-[0_0_10px_rgba(0,242,255,0.2)]">
                 <Command size={12} strokeWidth={2.5} />
               </div>
-              <div className="flex items-center gap-2 text-[9px] font-headline font-black text-neutral-500 uppercase tracking-[0.2em]">
-                <span className="opacity-50 text-[7px] tracking-normal mr-1">Path:</span>
+              <div className="flex items-center gap-2 text-[9px] font-headline font-black text-neutral-400 uppercase tracking-[0.2em]">
+                <span className="opacity-80 text-[7px] tracking-normal mr-1">Path:</span>
                 <span className="hover:text-cyan-400 transition-colors cursor-default">Access</span>
-                <ChevronRight size={10} className="text-white/10" />
+                <ChevronRight size={10} className="text-white/30" />
                 <span className="text-white/90">Uplink</span>
               </div>
            </div>
@@ -91,11 +91,11 @@ export default function LoginPage() {
                   Matrix Access
                 </motion.h1>
                 <div className="flex items-center justify-center gap-3">
-                  <div className="h-[1px] w-4 bg-white/10" />
-                  <p className="text-[8px] text-neutral-500 font-headline font-black uppercase tracking-[0.5em]">
+                  <div className="h-[1px] w-4 bg-white/20" />
+                  <p className="text-[8px] text-neutral-400 font-headline font-black uppercase tracking-[0.5em]">
                     id_req: identity_v1.0.auth
                   </p>
-                  <div className="h-[1px] w-4 bg-white/10" />
+                  <div className="h-[1px] w-4 bg-white/20" />
                 </div>
               </div>
             </div>
@@ -103,10 +103,10 @@ export default function LoginPage() {
             <form onSubmit={handleLogin} className="space-y-8">
               <div className="space-y-4">
                 <div className="flex justify-between items-center ml-1">
-                  <label className="font-headline text-[8px] tracking-[0.4em] font-black text-neutral-500 uppercase">
+                  <label className="font-headline text-[8px] tracking-[0.4em] font-black text-neutral-300 uppercase">
                     Verification Source
                   </label>
-                  <span className="text-[7px] font-mono text-cyan-400/40">UDP://AUTH.01</span>
+                  <span className="text-[7px] font-mono text-cyan-400/80">UDP://AUTH.01</span>
                 </div>
                 <div className="relative group holographic-focus">
                   <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-cyan-400 transition-colors z-10" size={16} />
@@ -116,7 +116,7 @@ export default function LoginPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="architect@componeo.io"
-                    className="w-full bg-black/40 border border-white/5 rounded-2xl py-6 pl-16 pr-6 text-gray-100 text-[13px] focus:outline-none focus:border-cyan-400/30 focus:ring-1 focus:ring-cyan-400/5 transition-all font-mono tracking-tight placeholder:text-gray-500 backdrop-blur-sm"
+                    className="w-full bg-black/40 border border-white/10 rounded-2xl py-6 pl-16 pr-6 text-gray-100 text-[13px] focus:outline-none focus:border-cyan-400/30 focus:ring-1 focus:ring-cyan-400/5 transition-all font-mono tracking-tight placeholder:text-gray-500 backdrop-blur-sm"
                   />
                   <div className="absolute right-6 top-1/2 -translate-y-1/2 opacity-0 group-focus-within:opacity-100 transition-opacity">
                     <div className="flex gap-1">
@@ -156,10 +156,10 @@ export default function LoginPage() {
             )}
             
             <div className="pt-6 border-t border-white/5 flex flex-col items-center gap-2">
-              <p className="text-[8px] text-neutral-700 font-headline font-black uppercase tracking-[0.4em]">
+              <p className="text-[8px] text-neutral-400 font-headline font-black uppercase tracking-[0.4em]">
                 Secured by Componeo Identity Matrix
               </p>
-              <div className="flex gap-1.5 grayscale opacity-20">
+              <div className="flex gap-1.5 grayscale opacity-50">
                 <div className="w-1.5 h-1.5 rounded-full bg-white" />
                 <div className="w-1.5 h-1.5 rounded-full bg-white" />
                 <div className="w-1.5 h-1.5 rounded-full bg-white" />
