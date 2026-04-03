@@ -1,0 +1,20 @@
+
+> componeo@0.1.0 dev
+> next dev
+
+   ▲ Next.js 15.5.14
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.0.2:3000
+   - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 2s
+ ○ Compiling /middleware ...
+ ✓ Compiled /middleware in 2s (166 modules)
+ ○ Compiling /login ...
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (215kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ ✓ Compiled /login in 15.8s (1576 modules)
+ GET /login 200 in 18063ms
+ ✓ Compiled in 2.2s (709 modules)
+ ✓ Compiled in 274ms (695 modules)
+ GET /login 200 in 196ms
