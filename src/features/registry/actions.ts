@@ -37,6 +37,38 @@ const fetchComponents = cache(async (category?: string) => {
 });
 
 /**
+ * Internal cached retrieval for a single component.
+ * Uses React cache for per-request memoization and Next.js unstable_cache for persistent storage.
+ */
+const fetchComponentById = cache(async (id: string) => {
+  return unstable_cache(
+    async () => {
+      try {
+        const supabase = createStaticClient();
+        const repository = new ComponentsRepository(supabase);
+        const data = await repository.getComponentById(id);
+
+        if (!data) {
+          // Check mock data for development units (e.g. initial registry units)
+          return (ELITE_MOCK_COMPONENTS.find(m => m.id === id) as unknown as ComponentRow) || null;
+        }
+
+        return data;
+      } catch (error) {
+        console.error(`SYSTEM: [Database_Error] Fetching component ${id} failed:`, error);
+        // Emergency UI pivot to mock data
+        return (ELITE_MOCK_COMPONENTS.find(m => m.id === id) as unknown as ComponentRow) || null;
+      }
+    },
+    [`component-${id}`],
+    {
+      revalidate: 3600, // Cache for 1 hour
+      tags: ['components', `component-${id}`]
+    }
+  )();
+});
+
+/**
  * Fetch all public components for the registry.
  */
 export async function getComponents(category?: string): Promise<ComponentRow[]> {
