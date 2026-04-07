@@ -7,13 +7,13 @@ import { ComponentsRepository, ComponentRow } from "@/lib/repositories/component
 import { ELITE_MOCK_COMPONENTS } from "./mockData";
 import { unstable_cache } from "next/cache";
 
-const fetchComponents = cache(async (category?: string) => {
-  return unstable_cache(
-    async () => {
+const getCachedComponents = async (category?: string) => {
+  const cachedFn = unstable_cache(
+    async (cat?: string) => {
       try {
         const supabase = createStaticClient();
         const repository = new ComponentsRepository(supabase);
-        const data = await repository.getPublicComponents(category);
+        const data = await repository.getPublicComponents(cat);
 
         // If database is empty, provide the architectural fallback for "Elite" onboarding
         if (data.length === 0) {
@@ -28,10 +28,43 @@ const fetchComponents = cache(async (category?: string) => {
         return ELITE_MOCK_COMPONENTS as unknown as ComponentRow[];
       }
     },
-    [`components-registry-${category || 'all'}`],
+    ['components', category ?? 'all'],
     {
       revalidate: 3600, // Cache for 1 hour
       tags: ['components']
+    }
+  );
+  return cachedFn(category);
+};
+
+/**
+ * Internal cached retrieval for a single component.
+ * Uses React cache for per-request memoization and Next.js unstable_cache for persistent storage.
+ */
+const fetchComponentById = cache(async (id: string) => {
+  return unstable_cache(
+    async () => {
+      try {
+        const supabase = createStaticClient();
+        const repository = new ComponentsRepository(supabase);
+        const data = await repository.getComponentById(id);
+
+        if (!data) {
+          // Check mock data for development units (e.g. initial registry units)
+          return (ELITE_MOCK_COMPONENTS.find(m => m.id === id) as unknown as ComponentRow) || null;
+        }
+
+        return data;
+      } catch (error) {
+        console.error(`SYSTEM: [Database_Error] Fetching component ${id} failed:`, error);
+        // Emergency UI pivot to mock data
+        return (ELITE_MOCK_COMPONENTS.find(m => m.id === id) as unknown as ComponentRow) || null;
+      }
+    },
+    [`component-${id}`],
+    {
+      revalidate: 3600, // Cache for 1 hour
+      tags: ['components', `component-${id}`]
     }
   )();
 });
@@ -40,26 +73,12 @@ const fetchComponents = cache(async (category?: string) => {
  * Fetch all public components for the registry.
  */
 export async function getComponents(category?: string): Promise<ComponentRow[]> {
-  return fetchComponents(category);
+  const start = performance.now();
+  const data = await getCachedComponents(category);
+  const end = performance.now();
+  console.log(`[Performance] getComponents(${category ?? 'all'}) took ${(end - start).toFixed(2)}ms`);
+  return data;
 }
-
-const fetchComponentById = cache(async (id: string): Promise<ComponentRow | null> => {
-  try {
-    const supabase = await createClient();
-    const repository = new ComponentsRepository(supabase);
-    const data = await repository.getComponentById(id);
-    
-    if (!data) {
-      // Check mock data for development units (e.g. initial registry units)
-      return (ELITE_MOCK_COMPONENTS.find(m => m.id === id) as unknown as ComponentRow) || null;
-    }
-
-    return data;
-  } catch (error) {
-    console.error(`SYSTEM: [Database_Error] Fetching component ${id} failed:`, error);
-    return (ELITE_MOCK_COMPONENTS.find(m => m.id === id) as unknown as ComponentRow) || null;
-  }
-});
 
 /**
  * Fetch a single component by its Unique ID.
