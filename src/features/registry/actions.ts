@@ -18,14 +18,14 @@ const fetchComponents = cache(async (category?: string) => {
         // If database is empty, provide the architectural fallback for "Elite" onboarding
         if (data.length === 0) {
           console.warn("SYSTEM: [Database_Empty] Serving architectural fallback set.");
-          return ELITE_MOCK_COMPONENTS as unknown as ComponentRow[];
+          return ELITE_MOCK_COMPONENTS;
         }
 
         return data;
       } catch (error) {
         console.error("SYSTEM: [Database_Error] Fetching components failed:", error);
         // Emergency UI pivot to mock data to prevent total system blackout
-        return ELITE_MOCK_COMPONENTS as unknown as ComponentRow[];
+        return ELITE_MOCK_COMPONENTS;
       }
     },
     [`components-registry-${category || 'all'}`],
@@ -54,12 +54,12 @@ export async function getComponentById(id: string): Promise<ComponentRow | null>
     
     if (!data) {
       // Check mock data for development units (e.g. initial registry units)
-      return (ELITE_MOCK_COMPONENTS.find(m => m.id === id) as unknown as ComponentRow) || null;
+      return (ELITE_MOCK_COMPONENTS.find(m => m.id === id) ) || null;
     }
 
     return data;
   } catch (error) {
     console.error(`SYSTEM: [Database_Error] Fetching component ${id} failed:`, error);
-    return (ELITE_MOCK_COMPONENTS.find(m => m.id === id) as unknown as ComponentRow) || null;
+    return (ELITE_MOCK_COMPONENTS.find(m => m.id === id) ) || null;
   }
 }
