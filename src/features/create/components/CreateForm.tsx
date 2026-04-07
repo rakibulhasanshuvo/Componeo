@@ -72,7 +72,7 @@ export default function CreateForm({
   };
 
   return (
-    <form id="forge-form" onSubmit={handleSubmit(handleFormSubmit)} className="flex flex-col gap-10 max-w-4xl mx-auto pb-40">
+    <form id="forge-form" aria-label="create-component-form" onSubmit={handleSubmit(handleFormSubmit)} className="flex flex-col gap-10 max-w-4xl mx-auto pb-40">
       {/* HUD Message for Errors */}
       {saveError && (
         <div className="bg-red-500/10 border border-red-500/40 p-4 rounded-lg flex items-center gap-3 text-red-400 font-headline text-xs tracking-widest uppercase animate-pulse">
