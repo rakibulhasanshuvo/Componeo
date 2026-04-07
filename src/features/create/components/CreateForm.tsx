@@ -60,7 +60,6 @@ export default function CreateForm({
     },
   });
 
-  const isPublic = watch("is_public");
   const thumbnail = watch("thumbnail");
 
   const handleFormSubmit = async (data: CreateComponentValues) => {

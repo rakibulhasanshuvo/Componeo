@@ -91,48 +91,35 @@ describe('Auth Callback Route', () => {
     vi.stubEnv('NODE_ENV', originalNodeEnv as string)
   })
 
-  it('should redirect to origin + next in local environment when exchange succeeds', async () => {
-    const originalNodeEnv = process.env.NODE_ENV
-    vi.stubEnv('NODE_ENV', 'development')
-
+  it('should redirect to origin + next when exchange succeeds and next is safe', async () => {
     mockExchangeCodeForSession.mockResolvedValueOnce({ error: null })
     const request = createRequest('http://localhost:3000/auth/callback?code=test-code&next=/custom-dashboard')
 
     await GET(request)
 
     expect(NextResponse.redirect).toHaveBeenCalledWith('http://localhost:3000/custom-dashboard')
-
-    vi.stubEnv('NODE_ENV', originalNodeEnv as string)
   })
 
-  it('should redirect to forwardedHost + next in non-local environment when forwarded host exists', async () => {
-    const originalNodeEnv = process.env.NODE_ENV
-    vi.stubEnv('NODE_ENV', 'production')
-
+  it('should fallback to /dashboard if next parameter is unsafe (e.g. absolute URL)', async () => {
     mockExchangeCodeForSession.mockResolvedValueOnce({ error: null })
-    const request = createRequest('https://original.com/auth/callback?code=test-code&next=/dashboard', {
-      'x-forwarded-host': 'forwarded.com'
+    const request = createRequest('http://localhost:3000/auth/callback?code=test-code&next=//malicious.com')
+
+    await GET(request)
+
+    // Should fallback to /dashboard
+    expect(NextResponse.redirect).toHaveBeenCalledWith('http://localhost:3000/dashboard')
+  })
+
+  it('should ignore forwarded host and redirect to origin + next', async () => {
+    mockExchangeCodeForSession.mockResolvedValueOnce({ error: null })
+    const request = createRequest('https://production.com/auth/callback?code=test-code&next=/dashboard', {
+      'x-forwarded-host': 'malicious.com'
     })
 
     await GET(request)
 
-    expect(NextResponse.redirect).toHaveBeenCalledWith('https://forwarded.com/dashboard')
-
-    vi.stubEnv('NODE_ENV', originalNodeEnv as string)
-  })
-
-  it('should redirect to origin + next in non-local environment when no forwarded host', async () => {
-    const originalNodeEnv = process.env.NODE_ENV
-    vi.stubEnv('NODE_ENV', 'production')
-
-    mockExchangeCodeForSession.mockResolvedValueOnce({ error: null })
-    const request = createRequest('https://production.com/auth/callback?code=test-code&next=/dashboard')
-
-    await GET(request)
-
+    // Should redirect to original.com (the origin), NOT malicious.com
     expect(NextResponse.redirect).toHaveBeenCalledWith('https://production.com/dashboard')
-
-    vi.stubEnv('NODE_ENV', originalNodeEnv as string)
   })
 
   it('should use default next value (/dashboard) if not provided in search params', async () => {
