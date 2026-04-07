@@ -43,23 +43,36 @@ export async function getComponents(category?: string): Promise<ComponentRow[]> 
   return fetchComponents(category);
 }
 
+const fetchComponentById = cache(async (id: string) => {
+  return unstable_cache(
+    async () => {
+      try {
+        const supabase = createStaticClient();
+        const repository = new ComponentsRepository(supabase);
+        const data = await repository.getComponentById(id);
+
+        if (!data) {
+          // Check mock data for development units (e.g. initial registry units)
+          return (ELITE_MOCK_COMPONENTS.find(m => m.id === id) as unknown as ComponentRow) || null;
+        }
+
+        return data;
+      } catch (error) {
+        console.error(`SYSTEM: [Database_Error] Fetching component ${id} failed:`, error);
+        return (ELITE_MOCK_COMPONENTS.find(m => m.id === id) as unknown as ComponentRow) || null;
+      }
+    },
+    [`component-${id}`],
+    {
+      revalidate: 3600, // Cache for 1 hour
+      tags: ['components', `component-${id}`]
+    }
+  )();
+});
+
 /**
  * Fetch a single component by its Unique ID.
  */
 export async function getComponentById(id: string): Promise<ComponentRow | null> {
-  try {
-    const supabase = await createClient();
-    const repository = new ComponentsRepository(supabase);
-    const data = await repository.getComponentById(id);
-    
-    if (!data) {
-      // Check mock data for development units (e.g. initial registry units)
-      return (ELITE_MOCK_COMPONENTS.find(m => m.id === id) as unknown as ComponentRow) || null;
-    }
-
-    return data;
-  } catch (error) {
-    console.error(`SYSTEM: [Database_Error] Fetching component ${id} failed:`, error);
-    return (ELITE_MOCK_COMPONENTS.find(m => m.id === id) as unknown as ComponentRow) || null;
-  }
+  return fetchComponentById(id);
 }
