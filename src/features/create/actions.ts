@@ -49,7 +49,15 @@ export async function createComponent(data: z.infer<typeof CreateComponentSchema
   let thumbnail_url = null;
 
   // 3. Handle Thumbnail Upload if present
-  if (data.thumbnail && data.thumbnail instanceof File) {
+  const isFileLike = (val: any): val is File => {
+    if (typeof window !== 'undefined') {
+      return val instanceof File;
+    }
+    // SSR fallback: Check for essential File-like properties
+    return val && typeof val === 'object' && 'name' in val && 'size' in val && 'type' in val;
+  };
+
+  if (data.thumbnail && isFileLike(data.thumbnail)) {
     const file = data.thumbnail;
     const fileExt = file.name.split('.').pop();
     const fileName = `${crypto.randomUUID()}-${Date.now()}.${fileExt}`;
