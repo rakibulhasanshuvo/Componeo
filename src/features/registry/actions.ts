@@ -43,10 +43,7 @@ export async function getComponents(category?: string): Promise<ComponentRow[]> 
   return fetchComponents(category);
 }
 
-/**
- * Fetch a single component by its Unique ID.
- */
-export async function getComponentById(id: string): Promise<ComponentRow | null> {
+const fetchComponentById = cache(async (id: string): Promise<ComponentRow | null> => {
   try {
     const supabase = await createClient();
     const repository = new ComponentsRepository(supabase);
@@ -62,4 +59,11 @@ export async function getComponentById(id: string): Promise<ComponentRow | null>
     console.error(`SYSTEM: [Database_Error] Fetching component ${id} failed:`, error);
     return (ELITE_MOCK_COMPONENTS.find(m => m.id === id) as unknown as ComponentRow) || null;
   }
+});
+
+/**
+ * Fetch a single component by its Unique ID.
+ */
+export async function getComponentById(id: string): Promise<ComponentRow | null> {
+  return fetchComponentById(id);
 }
