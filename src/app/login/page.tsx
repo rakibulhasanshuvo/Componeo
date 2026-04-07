@@ -4,8 +4,10 @@ import React, { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { motion } from "framer-motion";
 import { Mail, ArrowRight, ShieldCheck, Command, ChevronRight } from "lucide-react";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
+import dynamic from "next/dynamic";
+
+const Navbar = dynamic(() => import("@/components/layout/Navbar"), { ssr: false });
+const Footer = dynamic(() => import("@/components/layout/Footer"), { ssr: false });
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -67,9 +69,7 @@ export default function LoginPage() {
            </div>
         </div>
 
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+        <div
           className="max-w-md w-full refractive-glass rounded-[3rem] p-10 shadow-2xl relative overflow-hidden group"
         >
           {/* Internal Refraction Glow */}
@@ -82,14 +82,11 @@ export default function LoginPage() {
                 <ShieldCheck size={38} strokeWidth={1.5} className="relative z-10 group-hover/shield:scale-110 group-hover/shield:drop-shadow-[0_0_15px_rgba(0,242,255,0.5)] transition-all duration-500" />
               </div>
               <div className="space-y-2">
-                <motion.h1 
-                  initial={{ opacity: 0, y: 10, scale: 0.98 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+                <h1
                   className="font-headline text-5xl font-black text-white italic uppercase tracking-tighter chromatic-text"
                 >
                   Matrix Access
-                </motion.h1>
+                </h1>
                 <div className="flex items-center justify-center gap-3">
                   <div className="h-[1px] w-4 bg-white/10" />
                   <p className="text-[8px] text-neutral-500 font-headline font-black uppercase tracking-[0.5em]">
@@ -166,7 +163,7 @@ export default function LoginPage() {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </main>
 
       <Footer />
