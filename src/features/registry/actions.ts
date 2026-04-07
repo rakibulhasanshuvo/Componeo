@@ -18,14 +18,14 @@ const getCachedComponents = async (category?: string) => {
         // If database is empty, provide the architectural fallback for "Elite" onboarding
         if (data.length === 0) {
           console.warn("SYSTEM: [Database_Empty] Serving architectural fallback set.");
-          return ELITE_MOCK_COMPONENTS as unknown as ComponentRow[];
+          return ELITE_MOCK_COMPONENTS;
         }
 
         return data;
       } catch (error) {
         console.error("SYSTEM: [Database_Error] Fetching components failed:", error);
         // Emergency UI pivot to mock data to prevent total system blackout
-        return ELITE_MOCK_COMPONENTS as unknown as ComponentRow[];
+        return ELITE_MOCK_COMPONENTS;
       }
     },
     ['components', category ?? 'all'],
@@ -59,6 +59,38 @@ const fetchComponentById = cache(async (id: string) => {
         console.error(`SYSTEM: [Database_Error] Fetching component ${id} failed:`, error);
         // Emergency UI pivot to mock data
         return (ELITE_MOCK_COMPONENTS.find(m => m.id === id) as unknown as ComponentRow) || null;
+      }
+    },
+    [`component-${id}`],
+    {
+      revalidate: 3600, // Cache for 1 hour
+      tags: ['components', `component-${id}`]
+    }
+  )();
+});
+
+/**
+ * Internal cached retrieval for a single component.
+ * Uses React cache for per-request memoization and Next.js unstable_cache for persistent storage.
+ */
+const fetchComponentById = cache(async (id: string) => {
+  return unstable_cache(
+    async () => {
+      try {
+        const supabase = createStaticClient();
+        const repository = new ComponentsRepository(supabase);
+        const data = await repository.getComponentById(id);
+
+        if (!data) {
+          // Check mock data for development units (e.g. initial registry units)
+          return (ELITE_MOCK_COMPONENTS.find(m => m.id === id)) || null;
+        }
+
+        return data;
+      } catch (error) {
+        console.error(`SYSTEM: [Database_Error] Fetching component ${id} failed:`, error);
+        // Emergency UI pivot to mock data
+        return (ELITE_MOCK_COMPONENTS.find(m => m.id === id)) || null;
       }
     },
     [`component-${id}`],
