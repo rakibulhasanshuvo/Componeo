@@ -16,7 +16,11 @@ const CreateComponentSchema = z.object({
   category: z.string().min(1, "Category is required"),
   code: z.string().min(5, "Atomic code structure too simple"),
   is_public: z.boolean().default(true),
-  thumbnail: typeof window !== 'undefined' ? z.instanceof(File).optional() : z.any().optional(),
+  thumbnail: z.custom<File>((val) => {
+    if (typeof window !== 'undefined' && val instanceof File) return true;
+    if (val && typeof val === 'object' && 'name' in val && 'size' in val && 'type' in val) return true;
+    return false;
+  }, "Invalid file format").optional(),
 });
 
 export async function createComponent(data: z.infer<typeof CreateComponentSchema>) {
@@ -43,7 +47,12 @@ export async function createComponent(data: z.infer<typeof CreateComponentSchema
   let thumbnail_url = null;
 
   // 3. Handle Thumbnail Upload if present
-  if (data.thumbnail && data.thumbnail instanceof File) {
+  const isFileLike = (val: any): val is File => {
+    return (typeof window !== 'undefined' && val instanceof File) ||
+           (val && typeof val === 'object' && 'name' in val && 'size' in val && 'type' in val);
+  };
+
+  if (data.thumbnail && isFileLike(data.thumbnail)) {
     const file = data.thumbnail;
     const fileExt = file.name.split('.').pop();
     const fileName = `${crypto.randomUUID()}-${Date.now()}.${fileExt}`;
