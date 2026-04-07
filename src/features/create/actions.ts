@@ -17,9 +17,11 @@ const CreateComponentSchema = z.object({
   code: z.string().min(5, "Atomic code structure too simple"),
   is_public: z.boolean().default(true),
   thumbnail: z.custom<File>((val) => {
-    if (typeof window !== 'undefined' && val instanceof File) return true;
-    if (val && typeof val === 'object' && 'name' in val && 'size' in val && 'type' in val) return true;
-    return false;
+    if (typeof window !== 'undefined') {
+      return val instanceof File;
+    }
+    // SSR fallback: Check for essential File-like properties
+    return val && typeof val === 'object' && 'name' in val && 'size' in val && 'type' in val;
   }, "Invalid file format").optional(),
 });
 
@@ -48,8 +50,11 @@ export async function createComponent(data: z.infer<typeof CreateComponentSchema
 
   // 3. Handle Thumbnail Upload if present
   const isFileLike = (val: any): val is File => {
-    return (typeof window !== 'undefined' && val instanceof File) ||
-           (val && typeof val === 'object' && 'name' in val && 'size' in val && 'type' in val);
+    if (typeof window !== 'undefined') {
+      return val instanceof File;
+    }
+    // SSR fallback: Check for essential File-like properties
+    return val && typeof val === 'object' && 'name' in val && 'size' in val && 'type' in val;
   };
 
   if (data.thumbnail && isFileLike(data.thumbnail)) {
