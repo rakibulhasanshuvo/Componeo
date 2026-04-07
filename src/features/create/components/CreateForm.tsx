@@ -25,13 +25,15 @@ const createComponentSchema = z.object({
 
 export type CreateComponentValues = z.infer<typeof createComponentSchema>;
 
+import type { ComponentInsert } from "@/lib/repositories/componentsRepository";
+
 interface CreateFormProps {
   initialCode: string;
   onCodeChange: (code: string) => void;
   isSaving: boolean;
   saveError: string | null;
   onSaveError: (error: string | null) => void;
-  onSubmit: (data: CreateComponentValues) => Promise<void>;
+  onSubmit: (data: ComponentInsert & { thumbnail?: File }) => Promise<void>;
 }
 
 export default function CreateForm({ 
@@ -66,7 +68,9 @@ export default function CreateForm({
   const handleFormSubmit = async (data: CreateComponentValues) => {
     onSaveError(null);
     try {
-      await onSubmit(data);
+      // author_id is omitted/placeholder here since the server action handles real identity,
+      // but to satisfy the ComponentInsert type locally without using any:
+      await onSubmit({ ...data, author_id: "" });
     } catch (err: unknown) {
       onSaveError(err instanceof Error ? err.message : "Forge Overheat: Critical failure saving component.");
     }
