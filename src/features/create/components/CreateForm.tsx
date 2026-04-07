@@ -28,7 +28,6 @@ export type CreateComponentValues = z.infer<typeof createComponentSchema>;
 interface CreateFormProps {
   initialCode: string;
   onCodeChange: (code: string) => void;
-  isSaving: boolean;
   saveError: string | null;
   onSaveError: (error: string | null) => void;
   onSubmit: (data: CreateComponentValues) => Promise<void>;
@@ -37,7 +36,6 @@ interface CreateFormProps {
 export default function CreateForm({ 
   initialCode, 
   onCodeChange, 
-  isSaving, 
   saveError,
   onSaveError,
   onSubmit
@@ -60,7 +58,6 @@ export default function CreateForm({
     },
   });
 
-  const isPublic = watch("is_public");
   const thumbnail = watch("thumbnail");
 
   const handleFormSubmit = async (data: CreateComponentValues) => {
