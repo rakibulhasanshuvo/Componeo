@@ -7,13 +7,13 @@ import { ComponentsRepository, ComponentRow } from "@/lib/repositories/component
 import { ELITE_MOCK_COMPONENTS } from "./mockData";
 import { unstable_cache } from "next/cache";
 
-const fetchComponents = cache(async (category?: string) => {
-  return unstable_cache(
-    async () => {
+const getCachedComponents = async (category?: string) => {
+  const cachedFn = unstable_cache(
+    async (cat?: string) => {
       try {
         const supabase = createStaticClient();
         const repository = new ComponentsRepository(supabase);
-        const data = await repository.getPublicComponents(category);
+        const data = await repository.getPublicComponents(cat);
 
         // If database is empty, provide the architectural fallback for "Elite" onboarding
         if (data.length === 0) {
@@ -28,13 +28,14 @@ const fetchComponents = cache(async (category?: string) => {
         return ELITE_MOCK_COMPONENTS as unknown as ComponentRow[];
       }
     },
-    [`components-registry-${category || 'all'}`],
+    ['components', category ?? 'all'],
     {
       revalidate: 3600, // Cache for 1 hour
       tags: ['components']
     }
-  )();
-});
+  );
+  return cachedFn(category);
+};
 
 /**
  * Internal cached retrieval for a single component.
@@ -72,7 +73,11 @@ const fetchComponentById = cache(async (id: string) => {
  * Fetch all public components for the registry.
  */
 export async function getComponents(category?: string): Promise<ComponentRow[]> {
-  return fetchComponents(category);
+  const start = performance.now();
+  const data = await getCachedComponents(category);
+  const end = performance.now();
+  console.log(`[Performance] getComponents(${category ?? 'all'}) took ${(end - start).toFixed(2)}ms`);
+  return data;
 }
 
 const fetchComponentById = cache(async (id: string) => {
