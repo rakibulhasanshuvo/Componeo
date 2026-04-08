@@ -22,6 +22,7 @@ import { createComponent } from "@/features/create/actions";
 import { createClient } from "@/utils/supabase/client";
 import type { User } from "@supabase/supabase-js";
 import CreateForm, { CreateComponentValues } from "@/features/create/components/CreateForm";
+import type { ComponentInsert } from "@/lib/repositories/componentsRepository";
 
 // New Dashboard Components
 import ForgeSidebar from "@/features/create/components/ForgeSidebar";
@@ -94,11 +95,15 @@ export default function CreateComponentPage() {
     return () => clearTimeout(timer);
   };
 
-  const handleFormSubmit = async (data: CreateComponentValues) => {
+  const handleFormSubmit = async (data: ComponentInsert & { thumbnail?: File }) => {
     setIsSaving(true);
     setSaveError(null);
     try {
-      const result = await createComponent(data);
+      const result = await createComponent({
+        ...data,
+        is_public: data.is_public ?? true,
+        description: data.description ?? undefined,
+      });
       if (result.error) {
         setSaveError(result.error);
         return;
