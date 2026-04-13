@@ -1,4 +1,3 @@
-import React from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import FilterBar from "@/features/registry/components/FilterBar";
@@ -6,10 +5,7 @@ import ComponentCard from "@/features/registry/components/ComponentCard";
 import { getComponents } from "@/features/registry/actions";
 import { 
   Boxes, 
-  Search, 
-  Settings2, 
   ArrowRight,
-  Zap,
   ShieldCheck
 } from "lucide-react";
 import Link from "next/link";
