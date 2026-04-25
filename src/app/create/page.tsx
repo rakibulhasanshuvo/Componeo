@@ -283,7 +283,7 @@ export default function CreateComponentPage() {
                                  <div className="space-y-4">
                                    <h3 className="font-headline text-3xl font-black text-white italic tracking-tighter uppercase chromatic-text">Fusing Atoms</h3>
                                    <div className="flex items-center justify-center gap-1">
-                                      {[...Array(3)].map((_, i) => (
+                                      {Array.from({ length: 3 }, (_, i) => (
                                         <motion.div 
                                           key={i}
                                           animate={{ opacity: [0.2, 1, 0.2] }}
