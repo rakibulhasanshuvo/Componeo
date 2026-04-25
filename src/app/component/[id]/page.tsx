@@ -1,11 +1,6 @@
-import React from "react";
 import { notFound } from "next/navigation";
 import { 
-  ArrowLeft, 
   ChevronRight, 
-  Layers, 
-  Maximize2, 
-  Zap, 
   FileCode,
   Box,
   Share2,
