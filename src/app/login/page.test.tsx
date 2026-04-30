@@ -41,7 +41,7 @@ describe('LoginPage', () => {
     })
   })
 
-  it('displays an error message when login fails', async () => {
+  it('displays a generic error message when login fails', async () => {
     // Setup the mock to return an error
     const errorMessage = 'Invalid email address'
     mockSignInWithOtp.mockResolvedValueOnce({
@@ -58,9 +58,9 @@ describe('LoginPage', () => {
     const submitButton = screen.getByRole('button', { name: /dispatch access link/i })
     fireEvent.submit(submitButton)
 
-    // Verify the error message is displayed
+    // Verify the generic error message is displayed
     await waitFor(() => {
-      expect(screen.getByText(errorMessage)).toBeInTheDocument()
+      expect(screen.getByText(/authentication failed/i)).toBeInTheDocument()
     })
 
     // Verify the supabase client was called with correct args

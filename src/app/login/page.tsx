@@ -28,7 +28,7 @@ export default function LoginPage() {
     });
 
     if (error) {
-      setMessage({ type: "error", text: error.message });
+      setMessage({ type: "error", text: "Authentication failed. Please check your credentials." });
     } else {
       setMessage({ type: "success", text: "Matrix access link dispatched. Check your terminal (inbox)." });
     }
