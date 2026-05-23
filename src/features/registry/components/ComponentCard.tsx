@@ -176,10 +176,19 @@ export default function ComponentCard({
           </span>
         </div>
 
-        <div className="absolute top-6 right-6 z-20">
+        <div className="absolute top-6 right-6 z-20 flex gap-2">
           <div className="bg-black/40 backdrop-blur-md border border-white/5 py-1.5 px-3 rounded-xl flex items-center gap-2">
             <span className="text-[8px] font-headline font-black text-neutral-400 uppercase tracking-widest leading-none">ID.{id.slice(0, 4)}</span>
           </div>
+          {isDashboard && (
+            <button
+              onClick={handleDelete}
+              aria-label="Delete component"
+              className="bg-black/40 hover:bg-red-500/20 backdrop-blur-md border border-white/5 hover:border-red-500/50 py-1.5 px-3 rounded-xl flex items-center justify-center text-neutral-400 hover:text-red-400 transition-all group/delete"
+            >
+              <Trash2 size={12} className="group-hover/delete:scale-110 transition-transform" />
+            </button>
+          )}
         </div>
         
         {/* Refractive Glass Overlays */}
